@@ -20,7 +20,7 @@ app.controller('formController',['$scope','$http',function($scope,$http){
 
 		$scope.tinymceOptions = {
 		    plugins: 'link image code',
-		    toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | code'
+		    toolbar: 'fontselect |  fontsizeselect | undo redo | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | code'
 		  };
 /**********************************************************************/
 
