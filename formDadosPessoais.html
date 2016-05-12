@@ -1,0 +1,101 @@
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-br" xml:lang="pt-br">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<!--script src='js/tinymce/tinymce.min.js'></script>	
+	<script src='js/bower_components/angular-ui-tinymce/src/tinymce.js'></script>
+	<script src='js/bower_components/angular-ui-tinymce/src/tinymce.js'></script>
+	<script src="js/angular/angular.js"></script-->
+
+
+	<script type="text/javascript" src="js/bower_components/tinymce-dist/tinymce.js"></script>
+	<script type="text/javascript" src="js/bower_components/angular/angular.js"></script>
+	<script type="text/javascript" src="js/bower_components/angular-ui-tinymce/src/tinymce.js"></script>
+
+	<script src="js/app.js"></script>
+
+</head>
+<body ng-app="formApp" ng-controller="formController">
+	<form ng-submit="submitForm()">
+		<p>Nome: <input type='text' id='nameId' name='name' ng-model="formData.name"></p>
+		<p>Endereço:<br>Logradouro (Av, Rua, Praça): <input type='text' id='logradouroId' name='logradouro' ng-model="formData.logradouro"></p>
+		<p>Número: <input type='text' id='numeroId' name='numero' ng-model="formData.numero"></p>
+		<p>Bairro: <input type='text' id='bairroId' name='bairro' ng-model="formData.bairro"></p>
+		<p>Cidade: <input type='text' id='cidadeId' name='cidade' ng-model="formData.cidade"></p>
+		<p>UF: <input type='text' id='ufId' name='uf' ng-model="formData.uf"></p>
+		<p>Contatos - <a href='#' ng-click="add()">+</a>:
+			<div style="background: yellow;" ng-repeat="componente in componentes track by $index"> 
+				<select ng-options="item as item.label for item in items track by item.id" ng-model="formData.contatos[$index].tipoContato"></select>
+				<input type='text' ng-model='formData.contatos[$index].contato' placeholder="{{componente.textPlaceHolder}}">
+			</div>
+		</p>
+		<p>Nacionalidade: <input type='text' id='nationalityId' name='nationality' ng-model="formData.nationality"></p>
+		<p>Estado Civil: Solteiro <input type='radio' id='MaritalStatusId' name='maritalStatus' value='1' ng-model="formData.maritalStatus">
+		Casado <input type='radio' id='MaritalStatusId' name='maritalStatus' value='2' ng-model="formData.maritalStatus"></p>
+		<p>Data de Nascimento: <input type='text' id='birthDateId' name='birthDate' ng-model="formData.birthDate"></p>
+		<p>Objetivo: <input type='text' id='objectiveId' name='objective' ng-model="formData.goal"></p>
+		<p>Summary: <textarea id="summaryArea" ui-tinymce="tinymceOptions" ng-model="formData.summary"></textarea></p>
+
+		<p>Formação Acadêmica - <a href='#' ng-click="addEducation()">+</a>:
+			<div style="background: yellow;" ng-repeat="componente in educationComponents track by $index"> 
+				<select ng-options="item as item.label for item in educationItems track by item.id" ng-model="formData.educationAcademic[$index].educationDegree"></select>
+				Formação: <input type='text' ng-model='formData.educationAcademic[$index].education' placeholder="{{componente.textPlaceHolder}}">
+				Instituição: <input type='text' ng-model='formData.educationAcademic[$index].institution' placeholder="{{componente.institutionPlaceHolder}}">
+				Conclusão: <input type='text' ng-model='formData.educationAcademic[$index].conclusion' placeholder="{{componente.institutionPlaceHolder}}">
+			</div>
+		</p>
+		<p>Idiomas - <a href='#' ng-click="addLanguage()">+</a>:
+			<div style="background: yellow;" ng-repeat="componente in languageComponents track by $index"> 
+				Nível: <select ng-options="item as item.label for item in languageItems track by item.id" ng-model="formData.languages[$index].languageLevel"></select>
+				Idioma: <input type='text' ng-model='formData.languages[$index].language' placeholder="{{componente.textPlaceHolder}}">
+			</div>
+		</p>
+
+		<p>Vivência Internacional - <a href='#' ng-click="addInternationalExperience()">+</a>:
+			<div style="background: yellow;" ng-repeat="componente in internationalComponents track by $index"> 
+				País: <input type='text' id="country" ng-model='formData.internationalExperience[$index].country' placeholder="{{componente.countryPlaceHolder}}">
+				Duração: <input type='text' ng-model='formData.internationalExperience[$index].duration' placeholder="{{componente.durationPlaceHolder}}">
+				Experiência: <select ng-options="item as item.label for item in internationalItems track by item.id" ng-model="formData.internationalExperience[$index].experienceLiving"></select>
+			</div>
+		</p>
+
+
+		<p>Experiência Profissional - <a href='#' ng-click="addExperience()">+</a>:
+			<div style="background: yellow;" ng-repeat="componente in experienceComponents track by $index"> 
+				<br>Empresa: <input type='text' ng-model='formData.professionalExperience[$index].empresa' placeholder="{{componente.companyPlaceHolder}}">
+				<br>Função: <input type='text' ng-model='formData.professionalExperience[$index].position' placeholder="{{componente.positionPlaceHolder}}">
+				<br>Período de: <input type='text' ng-model='formData.professionalExperience[$index].periodFrom' placeholder="{{componente.fromPlaceHolder}}">&nbsp;até&nbsp;<input type='text' ng-model='formData.professionalExperience[$index].periodTo' placeholder="{{componente.toPlaceHolder}}">
+			<br>Atividades Executadas:<!--a href='#' ng-click="addTask()">+</a>
+			<div ng-repeat="componente in experienceComponents[$index].taskComponents track by $index">
+				Descrição: <input type='text' id="taskId" ng-model='formData.professionalExperience[$index].tasks[$index].task' placeholder="{{componente.taskPlaceHolder}}"><br>		
+			</div-->
+			<br><textarea id="tasks" ui-tinymce="tinymceOptions" ng-model="formData.professionalExperience[$index].tasksDescription" ></textarea><br><br>
+			</div>
+		</p>
+		<p>
+			Cursos Complementares - <a href='#' ng-click="addComplementaryEducation()">+</a>
+			<div style="background: yellow;" ng-repeat="componente in complementaryComponents track by $index"> 
+				Empresa: <input type='text' ng-model='formData.complementaryEducation[$index].company' placeholder="{{componente.companyPlaceHolder}}">
+				Curso:<input type='text' ng-model='formData.complementaryEducation[$index].company' placeholder="{{componente.trainingPlaceHolder}}">
+				Duração: <input type='text' ng-model='formData.complementaryEducation[$index].company' placeholder="{{componente.durationPlaceHolder}}">
+			</div>
+		</p>
+		<p>
+			Conhecimentos e Habilidades - <a href='#' ng-click="addSkill()">+</a>
+			<div style="background: yellow;" ng-repeat="componente in skillsComponents track by $index"> 
+				Conhecimento: <input type='text' ng-model='formData.skills[$index].skill' placeholder="{{componente.skillPlaceHolder}}">
+			</div>
+		</p>
+				
+
+
+		<p><button type="submit" id="submitId">Enviar</button></p>
+
+	</form>
+
+<!--------------------------------------->
+	<pre>
+		{{ formData }}
+
+	</pre>
+</body>
+</html>
