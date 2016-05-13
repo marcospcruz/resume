@@ -1,11 +1,15 @@
 <?php
 	require "../dao/pessoaDao.php";
+	require "../dao/empresaDao.php";
+	require "../dao/cargoDao.php";
 	require "../model/pessoa.php";
 	require "../model/maritalStatus.php";
 	require "../model/curriculum.php";
 	require "../model/empresa.php";
 	require "../model/cargo.php";
 	require "../model/experienciaProfissional.php";
+
+	$teste='{"curriculum":{"professionalExperience":[{"empresa":"Compsis Computadores e Sistemas","position":"Analista de Suporte e Implantação Pleno","periodFrom":"01/09/2013","tasksDescription":"<p>puta</p>","periodTo":"04/05/2016"},{"empresa":"jOHNSON & JOHNSON","tasksDescription":"<p>cu</p>","position":"Analista de Suporte e Implantação Pleno","periodFrom":"","periodTo":""}]},"maritalStatus":{"status":"1"},"name":"Marcos Pereira da Cruz"}';
 
 	$postdata = file_get_contents("php://input");
 	$request = json_decode($postdata);
@@ -16,8 +20,11 @@
 	$pessoaDao=new PessoaDAO();
 	$maritalStatus=new MaritalStatusTO();
 
-	$pessoa->__set('name',$request->name);
+	$idMaritalStatus=$request->maritalStatus->status;
+	$maritalStatus->__set('idMaritalStatus',$idMaritalStatus);
 	$maritalStatus->__set('idMaritalStatus',$request->maritalStatus);
+
+	$pessoa->__set('name',$request->name);
 	$pessoa->__set('maritalStatus',$maritalStatus);
 	$pessoa->__set('nationality',$request->nationality);
 	$pessoa->__set('birthDate',$request->birthDate);
@@ -63,15 +70,27 @@ class Montador{
 	}
 
 	private function montaEmpresa($dados){
-		$empresa=new EmpresaTO();
-		$empresa->__set('nomeEmpresa',$dados);
+		$empresaDao=new EmpresaDAO();
+		$empresa=$empresaDao->read($dados);
+		if(!isset($empresa)){
+			$empresa=new EmpresaTO();
+			$empresa->__set('nomeEmpresa',$dados);
+			$empresa=$empresaDao->create($empresa);
+		}
+
 		return $empresa;
 	}
 	
 	private function montaCargo($dados){
-		$cargo=new CargoTO();
-		$cargo->__set('descricaoCargo',$dados);
+		$cargoDao=new CargoDAO();
+		$cargo=$cargoDao->read($dados);
+		if(!isset($cargo)){		
+			$cargo=new CargoTO();
+			$cargo->__set('descricaoCargo',$dados);
+			$cargo=$cargoDao->create($cargo);
 
+		}
+		echo $cargo->__get('idCargo');
 		return $cargo;
 	}
 }
