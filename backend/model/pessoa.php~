@@ -17,9 +17,7 @@ class PessoaTO{
 	private $conhecimentosAdquiridos;
 	
 	public function addCurriculum($curriculum){
-		if($idPessoa==null || sizeof($curriculuns)==0)
-			$this->curriculuns[sizeof($curriculuns)]=$curriculum;
-
+		//if(
 	}
 
 	public function __get($property) {

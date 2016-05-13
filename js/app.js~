@@ -4,7 +4,7 @@ app.controller('formController',['$scope','$http',function($scope,$http){
 		
 		$scope.formData={};
 		//$scope.formData.contatos=[];
-		$scope.formData.curriculum={};
+		$scope.formData.curriculum={}
 		$scope.formData.curriculum.professionalExperience=[];
 		$scope.submitForm=function(){
 			$http({

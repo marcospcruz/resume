@@ -58,7 +58,7 @@ class Montador{
 			$experienciaArray[$i]=$experienciaProfissional;
 		
 		}
-
+		echo sizeof($experienciaArray);
 		return $experienciaArray;
 	}
 
