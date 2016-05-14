@@ -19,6 +19,7 @@
 		<p>Nome: <input type='text' id='nameId' name='name' ng-model="formData.name"></p>
 		<p>Endereço:<br>Logradouro (Av, Rua, Praça): <input type='text' id='logradouroId' name='logradouro' ng-model="formData.endereco.logradouro"></p>
 		<p>Número: <input type='text' id='numeroId' name='numero' ng-model="formData.endereco.numero"></p>
+		<p>CEP: <input type='text' id='cepId' name='cep' ng-model="formData.endereco.cep"></p>
 		<p>Bairro: <input type='text' id='bairroId' name='bairro' ng-model="formData.endereco.bairro"></p>
 		<p>Cidade: <input type='text' id='cidadeId' name='cidade' ng-model="formData.endereco.cidade"></p>
 		<p>UF: <input type='text' id='ufId' name='uf' ng-model="formData.endereco.uf"></p>
@@ -30,7 +31,7 @@
 		</p>
 		<p>Nacionalidade: <input type='text' id='nationalityId' name='nationality' ng-model="formData.nationality"></p>
 		<p>Estado Civil: Solteiro <input type='radio' id='MaritalStatusId' name='maritalStatus' value='1' ng-model="formData.maritalStatus.status">
-		Casado <input type='radio' id='MaritalStatusId' name='maritalStatus' value='2' ng-model="formData.maritalStatus"></p>
+		Casado <input type='radio' id='MaritalStatusId' name='maritalStatus' value='2' ng-model="formData.maritalStatus.status"></p>
 		<p>Data de Nascimento: <input type='text' id='birthDateId' name='birthDate' ng-model="formData.birthDate"></p>
 		<p>Objetivo: <input type='text' id='objectiveId' name='objective' ng-model="formData.curriculum.objetivo"></p>
 		<p>Summary: <textarea id="summaryArea" ui-tinymce="tinymceOptions" ng-model="formData.curriculum.summary"></textarea></p>
@@ -75,14 +76,17 @@
 			Cursos Complementares - <a href='#' ng-click="addComplementaryEducation()">+</a>
 			<div style="background: yellow;" ng-repeat="componente in complementaryComponents track by $index"> 
 				Empresa: <input type='text' ng-model='formData.complementaryEducation[$index].company' placeholder="{{componente.companyPlaceHolder}}">
-				Curso:<input type='text' ng-model='formData.complementaryEducation[$index].company' placeholder="{{componente.trainingPlaceHolder}}">
-				Duração: <input type='text' ng-model='formData.complementaryEducation[$index].company' placeholder="{{componente.durationPlaceHolder}}">
+				Curso:<input type='text' ng-model='formData.complementaryEducation[$index].course' placeholder="{{componente.trainingPlaceHolder}}">
+				Duração: <input type='text' ng-model='formData.complementaryEducation[$index].duration' placeholder="{{componente.durationPlaceHolder}}">
+				Início: <input type='text' ng-model='formData.complementaryEducation[$index].dataInicio' placeholder="{{componente.durationPlaceHolder}}">
+				Fim: <input type='text' ng-model='formData.complementaryEducation[$index].dataFim' placeholder="{{componente.durationPlaceHolder}}">
+
 			</div>
 		</p>
 		<p>
 			Conhecimentos e Habilidades - <a href='#' ng-click="addSkill()">+</a>
 			<div style="background: yellow;" ng-repeat="componente in skillsComponents track by $index"> 
-				Conhecimento: <input type='text' ng-model='formData.skills[$index].skill' placeholder="{{componente.skillPlaceHolder}}">
+				Conhecimento: <input type='text' ng-model='formData.skills[$index]' placeholder="{{componente.skillPlaceHolder}}">
 			</div>
 		</p>
 				

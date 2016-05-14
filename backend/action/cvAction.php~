@@ -41,7 +41,8 @@
 	//if($retorno!=1)
 	//	echo "Registro inserido com sucesso!";
 	}
-
+	echo $pessoa->__get('idPessoa');
+	die();
 	$pessoa->__set('curriculuns',array());
 	$pessoa->addCurriculum($montador->montaCurriculum($pessoa,$request->curriculum));
 

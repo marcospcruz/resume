@@ -6,7 +6,7 @@ class EmpresaDAO{
 	private function runSql($sql){
 		$retVal=mysql_query($sql);
 		if(!$retVal)
-			die('Falha ao inserir empresa!');
+			die('Falha ao inserir pessoa!');
 		return $retVal;
 	}
 
