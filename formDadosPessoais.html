@@ -36,12 +36,20 @@
 		<p>Objetivo: <input type='text' id='objectiveId' name='objective' ng-model="formData.curriculum.objetivo"></p>
 		<p>Summary: <textarea id="summaryArea" ui-tinymce="tinymceOptions" ng-model="formData.curriculum.summary"></textarea></p>
 
-		<p>Formação Acadêmica - <a href='#' ng-click="addEducation()">+</a>:
+		<p>Formação <a href='#' ng-click="addEducation()">+</a>:
 			<div style="background: yellow;" ng-repeat="componente in educationComponents track by $index"> 
-				<select ng-options="item as item.label for item in educationItems track by item.id" ng-model="formData.educationAcademic[$index].educationDegree"></select>
-				Curso: <input type='text' ng-model='formData.educationAcademic[$index].education' placeholder="{{componente.textPlaceHolder}}">
-				Instituição: <input type='text' ng-model='formData.educationAcademic[$index].institution' placeholder="{{componente.institutionPlaceHolder}}">
-				Conclusão: <input type='text' ng-model='formData.educationAcademic[$index].conclusion' placeholder="{{componente.institutionPlaceHolder}}">
+
+
+Tipo Formação: <select ng-options="item as item.label for item in educationTypeItems track by item.id" ng-model="formData.educationList[$index].educationType"></select><br>
+Grau Formação Acadêmica: <select ng-options="item as item.label for item in educationItems track by item.id" ng-model="formData.educationList[$index].educationDegree"></select><br>
+
+Curso: <input type='text' ng-model='formData.educationList[$index].education' placeholder="{{componente.textPlaceHolder}}"><br>
+Instituição: <input type='text' ng-model='formData.educationList[$index].institution' placeholder="{{componente.institutionPlaceHolder}}"><br>
+Duração: <input type='text' ng-model='formData.educationList[$index].duration' placeholder="{{componente.durationPlaceHolder}}"><br>
+Início: <input type='text' ng-model='formData.educationList[$index].dataInicio' placeholder="{{componente.durationPlaceHolder}}"><br>
+Fim: <input type='text' ng-model='formData.educationList[$index].dataFim' placeholder="{{componente.durationPlaceHolder}}"><br>
+
+<br><br>
 			</div>
 		</p>
 		<p>Idiomas - <a href='#' ng-click="addLanguage()">+</a>:
@@ -73,13 +81,6 @@
 			</div>
 		</p>
 		<p>
-			Cursos Complementares - <a href='#' ng-click="addComplementaryEducation()">+</a>
-			<div style="background: yellow;" ng-repeat="componente in complementaryComponents track by $index"> 
-				Empresa: <input type='text' ng-model='formData.complementaryEducation[$index].company' placeholder="{{componente.companyPlaceHolder}}">
-				Curso:<input type='text' ng-model='formData.complementaryEducation[$index].course' placeholder="{{componente.trainingPlaceHolder}}">
-				Duração: <input type='text' ng-model='formData.complementaryEducation[$index].duration' placeholder="{{componente.durationPlaceHolder}}">
-				Início: <input type='text' ng-model='formData.complementaryEducation[$index].dataInicio' placeholder="{{componente.durationPlaceHolder}}">
-				Fim: <input type='text' ng-model='formData.complementaryEducation[$index].dataFim' placeholder="{{componente.durationPlaceHolder}}">
 
 			</div>
 		</p>

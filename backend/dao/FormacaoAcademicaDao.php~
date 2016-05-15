@@ -1,7 +1,7 @@
 <?php
 require "../util/bdConexao.php";
 
-class CursoDAO{
+class FormacaoAcademicaDAO{
 	private $COLUNAS=array(
 		'idCurso',
 		'nomeCurso',
@@ -14,23 +14,24 @@ class CursoDAO{
 		return $retVal;
 	}
 
-	public function read($curso){
-
+	public function read($formacao){
+		die('formacao read');
 		$SQL="select ";
+		die($SQL);
 		$SQL.=$this->COLUNAS[0]. ',';
 		$SQL.=$this->COLUNAS[1]. ',';
 		$SQL.=$this->COLUNAS[2];
 		$SQL.=" from curso where ";
 		$SQL.=$this->COLUNAS[1]."='".$curso->__get($this->COLUNAS[1])."' and ";
 		$empresa=$curso->__get('instituicao');
-		$SQL.=$this->COLUNAS[2]."=".$empresa->__get($this->COLUNAS[2]);
+		$SQL.=$this->COLUNAS[2]."='".$empresa->__get($this->COLUNAS[2]);
 		$query=mysql_query($SQL);
 		$curso=null;
 		while($result=mysql_fetch_array($query)){
 			$curso=new CursoTO();
-			$curso->__set($this->COLUNAS[0],$result[0]);
-			$curso->__set($this->COLUNAS[1],$result[1]);
-			$curso->__set('instituicao',$empresa);
+			$cargo->__set($this->COLUNAS[0],$result[0]);
+			$cargo->__set($this->COLUNAS[1],$result[1]);
+			$cargo->__set('instituicao',$empresa);
 		}
 		return $curso;
 	}

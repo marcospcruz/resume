@@ -28,9 +28,9 @@ class CursoDAO{
 		$curso=null;
 		while($result=mysql_fetch_array($query)){
 			$curso=new CursoTO();
-			$curso->__set($this->COLUNAS[0],$result[0]);
-			$curso->__set($this->COLUNAS[1],$result[1]);
-			$curso->__set('instituicao',$empresa);
+			$cargo->__set($this->COLUNAS[0],$result[0]);
+			$cargo->__set($this->COLUNAS[1],$result[1]);
+			$cargo->__set('instituicao',$empresa);
 		}
 		return $curso;
 	}

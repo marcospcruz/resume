@@ -3,8 +3,9 @@ class FormacaoAcademicaTO{
 	private $idFormacaoAcademica;
 	private $curso;
 	private $tipoFormacao;
-	private $dataInicio;
-	private $dataFim;
+	//private $dataInicio;
+	//private $dataFim;
+	private $conclusao;
 
 	public function __get($property) {
 	    if (property_exists($this, $property)) {

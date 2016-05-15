@@ -1,9 +1,8 @@
 <?php
-class CursoTO{
+class GrauFormacaoTO{
 	
-	private $idCurso;
-	private $nomeCurso;
-	private $instituicao;
+	private $idGrauFormacao;
+	private $descricao;
 	
 
 

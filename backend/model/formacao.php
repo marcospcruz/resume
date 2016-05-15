@@ -1,10 +1,14 @@
 <?php
-class CursoTO{
-	
-	private $idCurso;
-	private $nomeCurso;
-	private $instituicao;
-	
+class FormacaoTO{
+	private $idFormacao;
+	private $curso;
+	private $tipoFormacao;
+	private $grauFormacao;
+	private $conclusao;
+	private $pessoa;
+	private $dataInicio;
+	private $dataFim;
+	private $duracaoHoras;
 
 
 	public function __get($property) {

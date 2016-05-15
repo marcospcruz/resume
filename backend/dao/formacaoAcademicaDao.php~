@@ -1,0 +1,75 @@
+<?php
+require "../util/bdConexao.php";
+
+class FormacaoAcademicaDAO{
+	private $COLUNAS=array(
+		'idFormacaoAcademica',
+		'conclusao',
+		'idCurso',
+		'idTipoFormacao',
+		'idPessoa'     
+	);
+	private function runSql($sql){
+		$retVal=mysql_query($sql);
+
+		if(!$retVal)
+			die('Falha ao inserir formacao!');
+		return $retVal;
+	}
+
+	public function read($formacao){
+
+		$SQL="select ";
+		
+		$SQL.=$this->COLUNAS[0]. ',';
+		$SQL.=$this->COLUNAS[1]. ',';
+		$SQL.=$this->COLUNAS[2]. ',';
+		$SQL.=$this->COLUNAS[3]. ',';
+		$SQL.=$this->COLUNAS[4];
+		$SQL.=" from formacaoAcademica where ";
+		$SQL.=$this->COLUNAS[1]."='".$formacao->__get($this->COLUNAS[1])."' and ";
+		$pessoa=$formacao->__get('pessoa');
+
+		$SQL.=$this->COLUNAS[4]."=".$pessoa->__get($this->COLUNAS[4]);
+		$query=mysql_query($SQL);
+		$formacao=null;
+		while($result=mysql_fetch_array($query)){
+			$formacao=new FormacaoAcademicaTO();
+			$formacao->__set($this->COLUNAS[0],$result[0]);
+			$formacao->__set($this->COLUNAS[1],$result[1]);
+			$formacao->__set($this->COLUNAS[2],$result[2]);
+			$formacao->__set($this->COLUNAS[3],$result[3]);
+			$formacao->__set('pessoa',$pessoa);
+		}
+		die($SQL);
+		return $formacao;
+	}
+
+	public function create($formacao){
+		$SQL="insert into formacaoAcademica(";
+		$SQL.=$this->COLUNAS[1].',';
+		$SQL.=$this->COLUNAS[2].',';
+		$SQL.=$this->COLUNAS[3].',';
+		$SQL.=$this->COLUNAS[4];
+		$SQL.=") values('";
+		$SQL.=$formacao->__get($this->COLUNAS[1])."',";
+
+		$i=$formacao->__get('curso');
+		$SQL.=$i->__get($this->COLUNAS[2]).",";				
+		$tipoFormacao=$formacao->__get('tipoFormacao');
+		$SQL.=$tipoFormacao->__get($this->COLUNAS[3]).",";
+		$pessoa=$formacao->__get('pessoa');
+		$SQL.=$pessoa->__get($this->COLUNAS[4]).")";
+		$this->runSql($SQL);
+		return $this->read($formacao);
+	}
+
+	private function convertDate($data){
+		$data=explode('/',$data);
+		return $data[2].'-'.$data[1].'-'.$data[0];
+	}
+	
+}
+
+
+?>

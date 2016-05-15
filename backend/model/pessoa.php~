@@ -10,10 +10,10 @@ class PessoaTO{
 	private $contatos;
 	private $birthDate;
 	private $curriculuns;
-	private $formacao;
+	private $formacaoAcademica;
 	private $idiomas;
 	private $vivenciaInternarcional;
-//	private $formacaoExtracurricular;
+	private $formacaoExtracurricular;
 	private $conhecimentosAdquiridos;
 	
 	public function addFormacaoExtracurricular($formacao){

@@ -3,7 +3,7 @@ class CursoTO{
 	
 	private $idCurso;
 	private $nomeCurso;
-	private $instituicao;
+	private $empresa;
 	
 
 

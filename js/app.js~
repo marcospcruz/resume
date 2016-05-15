@@ -58,13 +58,14 @@ app.controller('formController',['$scope','$http',function($scope,$http){
 			});
 		}
 
+/*
 		$scope.educationTypeItems=[{
 				  id: 1,
 				  label: 'Acadêmica'
 				}, {
 				  id: 2,
 				  label: 'Complementar'
-				}]; 
+				}]; */
 
 		$scope.educationItems = [{
 				  id: 1,
