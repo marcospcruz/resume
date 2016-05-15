@@ -1,5 +1,5 @@
 <?php
-class CargoTO{
+class ContatoTO{
 	private $idContato;
 	private $valor;
 	private $tipoContato;

@@ -4,6 +4,8 @@
 	require "../dao/enderecoDao.php";
 	require "../dao/empresaDao.php";
 	require "../dao/cargoDao.php";
+	require "../dao/cursoDao.php";
+	require "../dao/contatoDao.php";
 	require "../dao/experienciaProfissionalDao.php";
 	require "../dao/curriculumDao.php";
 	require "../model/pessoa.php";
@@ -13,6 +15,10 @@
 	require "../model/cargo.php";
 	require "../model/experienciaProfissional.php";
 	require "../model/endereco.php";
+	require "../model/contato.php";
+	require "../model/tipoContato.php";
+	require "../model/formacaoAcademica.php";
+	require "../model/curso.php";
 
 	$teste='{"curriculum":{"professionalExperience":[{"empresa":"compsis","position":"Analista de Suporte e Implantação Pleno","periodFrom":"01/09/2013","periodTo":"04/05/2016","tasksDescription":"<p>Atividades Executadas</p>"}],"summary":"<p>Resumo</p>","objetivo":"Analista Desenvolvedor de Sistemas"},"skills":{"0":"JAVA","1":"Javascript"},"complementaryEducation":{"0":{"company":"Globalcode","course":"AA2","duration":"40horas","dataInicio":"01/11/2015","dataFim":"10/11/2015"}},"internationalExperience":{"0":{"country":"Nigéria","duration":"2 anos","experienceLiving":{"id":1,"label":"Vivência Profissional"}}},"languages":{"0":{"languageLevel":{"id":1,"label":"Fluente"},"language":"Inglês"}},"educationAcademic":{"0":{"educationDegree":{"id":1,"label":"Superior"},"education":"Tecnologia em Análise e Desenvolvimento de Sistemas","institution":"ETEP Faculdades","conclusion":"2013"}},"name":"Marcos Pereira da Cruz","endereco":{"logradouro":"Rua Alexandrino José de Souza","numero":"493","bairro":"Santana","cidade":"São José dos Campos","uf":"SP"},"contatos":{"0":{"tipoContato":{"id":1,"label":"Telefone"},"contato":"12 981110829"}},"nationality":"Brasileira","maritalStatus":{"status":"1"},"birthDate":"16/07/1982"}';
 
@@ -34,6 +40,7 @@
 		$pessoa->__set('maritalStatus',$maritalStatus);
 		$pessoa->__set('nationality',$request->nationality);
 		$pessoa->__set('birthDate',convertDate($request->birthDate));
+		//CRIANDO ENDERECO
 		$pessoa->__set('endereco',$montador->montaEndereco($request->endereco));
 
 		$pessoa=$pessoaDao->update($pessoa);
@@ -41,14 +48,55 @@
 	//if($retorno!=1)
 	//	echo "Registro inserido com sucesso!";
 	}
-
+	//CRIANDO CURRICULUM
 	$pessoa->__set('curriculuns',array());
 	$pessoa->addCurriculum($montador->montaCurriculum($pessoa,$request->curriculum));
+	//CRIANDO CONTATOS
+	$pessoa->__set('contatos',$montador->montaContatos($pessoa,$request->contatos));
+	//CRIANDO FORMACAO CURRICULAR
+	$pessoa->__set('formacaoAcademica',$montador->montaFormacaoAcademica($pessoa,$request->educationAcademic));
 
 
 	//echo $postdata;
 
 class Montador{
+	public function montaFormacaoAcademica($pessoa,$education){
+		foreach($education as $dado){
+			$formacaoAcademica=new FormacaoAcademicaTO();
+			$formacaoAcademica->__set('curso',$this->montaCurso($dado->education,$dado->institution));
+//			$curso->__set('nomeEmpresa',);
+			die('montaFormacao');
+
+		}
+	}
+
+	private function montaCurso($nomeCurso,$nomeEmpresa){
+		$dao=new CursoDAO();
+		$curso=new CursoTO();
+		$empresa=$this->montaEmpresa($nomeEmpresa);
+		$curso->__set('empresa',$empresa);
+		$curso->__set('nomeCurso',$nomeCurso);
+		die($empresa->__get());
+		$c=$dao->read($curso);
+		die('montaCurso');
+		return $curso;
+
+	}
+	public function montaContatos($pessoa,$contatos){
+		foreach($contatos as $dado){
+			$dao=new ContatoDAO();
+			$contato=new ContatoTO();
+			$contato->__set('valor',$dado->contato);
+			$tipoContato=new TipoContatoTO();
+			$tipoContato->__set('idTipoContato',$dado->tipoContato->id);
+			$contato->__set('tipoContato',$tipoContato);
+			$contato->__set('pessoa',$pessoa);
+			$co=$dao->read($contato);
+			if(!isset($co)){
+				$contato=$dao->update($contato);
+			}
+		}
+	}
 	public function montaCurriculum($pessoa,$dados){
 		$dao=new CurriculumDAO();
 		$curriculum=$dao->read($dados->objetivo);
@@ -102,7 +150,7 @@ class Montador{
 			$empresa->__set('nomeEmpresa',$dados);
 			$empresa=$empresaDao->create($empresa);
 		}
-
+	
 		return $empresa;
 	}
 	
