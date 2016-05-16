@@ -1,37 +1,5 @@
 <?php
-	require "../util/utilitario.php";
-	require "../dao/pessoaDao.php";
-	require "../dao/idiomaDao.php";
-	require "../dao/enderecoDao.php";
-	require "../dao/formacaoDao.php";
-	require "../dao/empresaDao.php";
-	require "../dao/cargoDao.php";
-	require "../dao/skillDao.php";
-	require "../dao/cursoDao.php";
-	require "../dao/paisDao.php";
-	require "../dao/contatoDao.php";
-	require "../dao/experienciaProfissionalDao.php";
-	require "../dao/curriculumDao.php";
-	require "../dao/vivenciaInternacionalDao.php";
-	require "../model/pessoa.php";
-	require "../model/pais.php";
-	require "../model/skill.php";
-	require "../model/maritalStatus.php";
-	require "../model/curriculum.php";
-	require "../model/empresa.php";
-	require "../model/cargo.php";
-	require "../model/experienciaProfissional.php";
-	require "../model/endereco.php";
-	require "../model/contato.php";
-	require "../model/grauFormacao.php";
-	require "../model/tipoContato.php";
-	require "../model/tipoVivenciaInternacional.php";
-	require "../model/idioma.php";
-	require "../model/fluenciaIdioma.php";
-	require "../model/tipoFormacao.php";
-	require "../model/formacao.php";
-	require "../model/curso.php";
-	require "../model/vivenciaInternacional.php";
+	require_once 'imports.php';
 
 	$teste='{"curriculum":{"professionalExperience":[{"empresa":"compsis","position":"Analista de Suporte e Implantação Pleno","periodFrom":"01/09/2013","periodTo":"04/05/2016","tasksDescription":"<p>Atividades Executadas</p>"}],"summary":"<p>Resumo</p>","objetivo":"Analista Desenvolvedor de Sistemas"},"skills":{"0":"JAVA","1":"Javascript"},"complementaryEducation":{"0":{"company":"Globalcode","course":"AA2","duration":"40horas","dataInicio":"01/11/2015","dataFim":"10/11/2015"}},"internationalExperience":{"0":{"country":"Nigéria","duration":"2 anos","experienceLiving":{"id":1,"label":"Vivência Profissional"}}},"languages":{"0":{"languageLevel":{"id":1,"label":"Fluente"},"language":"Inglês"}},"educationAcademic":{"0":{"educationDegree":{"id":1,"label":"Superior"},"education":"Tecnologia em Análise e Desenvolvimento de Sistemas","institution":"ETEP Faculdades","conclusion":"2013"}},"name":"Marcos Pereira da Cruz","endereco":{"logradouro":"Rua Alexandrino José de Souza","numero":"493","bairro":"Santana","cidade":"São José dos Campos","uf":"SP"},"contatos":{"0":{"tipoContato":{"id":1,"label":"Telefone"},"contato":"12 981110829"}},"nationality":"Brasileira","maritalStatus":{"status":"1"},"birthDate":"16/07/1982"}';
 

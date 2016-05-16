@@ -10,7 +10,57 @@ class ContatoDAO{
 		'displayOnView'
 	
 	);
+	const TABLE_NAME='contato';
+	private function populateEntity($query){
+		$contato=null;
+		while($result=mysql_fetch_array($query)){
+			$contato=new PessoaTO();
+			$contato->__set($this->COLUNAS[0],$result[0]);
+			$contato->__set($this->COLUNAS[1],$result[1]);
+			//$contato->__set('pessoa',$pessoa);
+			$tipoContato=new TipoContatoTO();
+			$tipoContato->__set($this->COLUNAS[3],$result[3]);
+			$contato->__set('tipoContato',$tipoContato);
+			$contato->__set('displayOnView',$result[4]);
 
+		}
+
+		return $contato;
+	}
+
+	public function selectBuilder(){
+		$sql='select ';
+		for($i=0;$i<sizeof($this->COLUNAS);$i++){
+
+			$sql.=$this->COLUNAS[$i];
+
+			if($i<(sizeof($this->COLUNAS)-1))
+				$sql.=',';
+		}
+		$sql.=' from '.self::TABLE_NAME;
+		return $sql;
+
+	}
+	public function readPersonContact($pessoa){
+		$sql=$this->selectBuilder();
+		$sql.' where idPessoa='.$pessoa->__get('idPessoa');
+		$query=mysql_query($sql);
+		
+		$contatos=array();
+		while($result=mysql_fetch_array($query)){
+			$contato=new ContatoTO();
+			$contato->__set($this->COLUNAS[0],$result[0]);
+			$contato->__set($this->COLUNAS[1],$result[1]);
+			//$contato->__set('pessoa',$pessoa);
+			$tipoContato=new TipoContatoTO();
+			$tipoContato->__set($this->COLUNAS[3],$result[3]);
+			$contato->__set('tipoContato',$tipoContato);
+			$contato->__set('displayOnView',boolval($result[4]));
+			$contatos[sizeof($contatos)]=$contato;
+		}
+
+		return $contatos;
+	}
 	public function read($contato){
 		$SQL="select ";
 		$SQL.=$this->COLUNAS[0].",";
@@ -22,20 +72,7 @@ class ContatoDAO{
 		$pessoa=$contato->__get('pessoa');
 		$SQL.=$this->COLUNAS[2].'='.$pessoa->__get($this->COLUNAS[2]);
 		$query=mysql_query($SQL);
-		$contato=null;
-		while($result=mysql_fetch_array($query)){
-			$contato=new PessoaTO();
-			$contato->__set($this->COLUNAS[0],$result[0]);
-			$contato->__set($this->COLUNAS[1],$result[1]);
-			$pessoa->__set('pessoa',$pessoa);
-			$tipoContato=new TipoContatoTO();
-			$tipoContato->__set($this->COLUNAS[3],$result[3]);
-			$contato->__set('tipoContato',$tipoContato);
-			$contato->__set('displayOnView',$result[4]);
-
-		}
-
-		return $contato;
+		return $this->populateEntity($query);
 	}
 	private function runSql($sql){
 		$retVal=mysql_query($sql);

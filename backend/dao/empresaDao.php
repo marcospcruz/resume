@@ -9,11 +9,19 @@ class EmpresaDAO{
 			die('Falha ao inserir empresa!');
 		return $retVal;
 	}
-
+	public function readEmpresaById($idEmpresa){
+		$SQL="select idEmpresa,nomeEmpresa,descricao from empresa where idEmpresa=";
+		$SQL.=$idEmpresa;
+		$query=mysql_query($SQL);
+		return $this->populateEntity($query);
+	}
 	public function read($dados){
-		$SQL="select * from empresa where nomeEmpresa='";
+		$SQL="select idEmpresa,nomeEmpresa,descricao from empresa where nomeEmpresa='";
 		$SQL.=$dados."'";
 		$query=mysql_query($SQL);
+		return $this->populateEntity($query);
+	}
+	private function populateEntity($query){
 		$empresa=null;
 		while($result=mysql_fetch_array($query)){
 			$empresa=new EmpresaTO();
@@ -22,8 +30,8 @@ class EmpresaDAO{
 			$empresa->__set('descricaoEmpresa',$result[2]);
 		}
 		return $empresa;
+	
 	}
-
 	public function create($empresa){
 
 		$SQL="insert into empresa(nomeEmpresa,descricao) values('";

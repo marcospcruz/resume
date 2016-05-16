@@ -2,18 +2,21 @@
 require "../util/bdConexao.php";
 
 class CargoDAO{
-
+	
 	private function runSql($sql){
 		$retVal=mysql_query($sql);
 		if(!$retVal)
 			die('Falha ao inserir cargo!');
 		return $retVal;
 	}
-
-	public function read($dados){
-		$SQL="select idCargo,descricaoCargo,nivelCargo from cargo where descricaoCargo='";
-		$SQL.=$dados."'";
+	public function readCargoExperiencia($idCargo){
+		$SQL="select idCargo,descricaoCargo,nivelCargo from cargo where idCargo='";
+		$SQL.=$idCargo."'";
 		$query=mysql_query($SQL);
+		$cargo=null;	
+		return $this->populateEntity($query);
+	}
+	private function populateEntity($query){
 		$cargo=null;
 		while($result=mysql_fetch_array($query)){
 			$cargo=new CargoTO();
@@ -22,6 +25,12 @@ class CargoDAO{
 			$cargo->__set('idCargo',$result[0]);
 		}
 		return $cargo;
+	}
+	public function read($dados){
+		$SQL="select idCargo,descricaoCargo,nivelCargo from cargo where descricaoCargo='";
+		$SQL.=$dados."'";
+		$query=mysql_query($SQL);
+		return $this->populateEntity($query);
 	}
 
 	public function create($cargo){

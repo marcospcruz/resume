@@ -12,4 +12,11 @@
 		return $data[2].'-'.$data[1].'-'.$data[0];
 	}
 
+
+	function convertFromSqlToDate($date){
+		$data=explode('-',$date);
+		
+		return $data[2].'/'.$data[1].'/'.$data[0];	
+	}
+
 ?>

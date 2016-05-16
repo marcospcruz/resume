@@ -13,7 +13,44 @@ class ExperienciaProfissionalDAO{
 		'idEmpresa',//5
 		'idCurriculum'//6
 	);
+	const TABLE_NAME='experienciaProfissional';
+	private function selectBuilder(){
+		$sql='select ';
+		for($i=0;$i<sizeof($this->COLUNAS);$i++){
 
+			$sql.=$this->COLUNAS[$i];
+
+			if($i<(sizeof($this->COLUNAS)-1))
+				$sql.=',';
+		}
+		$sql.=' from '.self::TABLE_NAME;
+		return $sql;
+	}
+	public function readExperienciaCurriculum($curriculum){
+		$sql=$this->selectBuilder();
+		$sql.=" where idCurriculum=".$curriculum->__get('idCurriculum');
+		$sql.=' order by dataInicio desc';
+		$query=mysql_query($sql);
+		$experiencias=array();
+		while($result=mysql_fetch_array($query)){
+			
+			$experiencia=new ExperienciaProfissionalTO();
+			$experiencia->__set($this->COLUNAS[0],$result[0]);
+			$experiencia->__set($this->COLUNAS[1],$result[1]);
+			$experiencia->__set($this->COLUNAS[2],$result[2]);
+			$experiencia->__set($this->COLUNAS[3],$result[3]);
+			$cargoDao=new CargoDAO();
+			$cargo=$cargoDao->readCargoExperiencia($result[4]);
+			$experiencia->__set('cargo',$cargo);
+			$empresaDao=new EmpresaDAO();
+			$empresa=$empresaDao->readEmpresaById($result[5]);			
+			$experiencia->__set('empresa',$empresa);
+			$experiencia->__set($this->COLUNAS[6],$result[6]);
+			$experiencias[sizeof($experiencias)]=$experiencia;
+	
+		}	
+		return $experiencias;
+	}
 	private function runSql($sql){
 		//die($sql);
 		$retVal=mysql_query($sql);

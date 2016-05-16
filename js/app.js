@@ -4,8 +4,17 @@ app.controller('formController',['$scope','$http',function($scope,$http){
 		
 		$scope.formData={};
 
-		
-
+		$http.get("backend/action/cvGet.php")
+		.then(function(response){
+			$scope.formData=response.data;
+			for(var i=0;i<response.data.contatos.length;i++)
+				$scope.add();
+			for(var i=0;i<response.data.curriculum.professionalExperience.length;i++)
+				$scope.addExperience();
+		},function myError(response){
+			alert(JSON.stringify(response));
+		});
+/***********************************************************************/
 		//$scope.formData.contatos=[];
 		$scope.formData.curriculum={};
 		$scope.formData.curriculum.professionalExperience=[];
