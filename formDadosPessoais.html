@@ -73,7 +73,8 @@ Fim: <input type='text' ng-model='formData.educationList[$index].dataFim' placeh
 
 		<p>Experiência Profissional - <a href='#' ng-click="addExperience()">+</a>:
 			<div style="background: yellow;" ng-repeat="componente in experienceComponents track by $index"> 
-				<br>Empresa: <input type='text' ng-model='formData.curriculum.professionalExperience[$index].empresa' placeholder="{{componente.companyPlaceHolder}}">
+				<br>Empresa: <input type='text' ng-model='formData.curriculum.professionalExperience[$index].empresa.nomeEmpresa' placeholder="{{componente.companyPlaceHolder}}">
+				<br>Descrição Empresa:  <input type='text' id="cDescription" ng-model="formData.curriculum.professionalExperience[$index].empresa.descricaoEmpresa">
 				<br>Função: <input type='text' ng-model='formData.curriculum.professionalExperience[$index].position' placeholder="{{componente.positionPlaceHolder}}">
 				<br>Período de: <input type='text' ng-model='formData.curriculum.professionalExperience[$index].periodFrom' placeholder="{{componente.fromPlaceHolder}}">&nbsp;até&nbsp;<input type='text' ng-model='formData.curriculum.professionalExperience[$index].periodTo' placeholder="{{componente.toPlaceHolder}}">
 			<br>Atividades Executadas:<!--a href='#' ng-click="addTask()">+</a>

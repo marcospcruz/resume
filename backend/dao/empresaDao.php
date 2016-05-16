@@ -19,13 +19,16 @@ class EmpresaDAO{
 			$empresa=new EmpresaTO();
 			$empresa->__set('nomeEmpresa',$result[1]);
 			$empresa->__set('idEmpresa',$result[0]);
+			$empresa->__set('descricaoEmpresa',$result[2]);
 		}
 		return $empresa;
 	}
 
 	public function create($empresa){
-		$SQL="insert into empresa(nomeEmpresa) values('";
-		$SQL.=$empresa->__get('nomeEmpresa')."')";
+
+		$SQL="insert into empresa(nomeEmpresa,descricao) values('";
+		$SQL.=$empresa->__get('nomeEmpresa')."','";
+		$SQL.=$empresa->__get('descricaoEmpresa')."')";
 		$this->runSql($SQL);
 		return $this->read($empresa->__get('nomeEmpresa'));
 	}

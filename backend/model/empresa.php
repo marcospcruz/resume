@@ -3,7 +3,7 @@ class EmpresaTO{
 	
 	private $idEmpresa;
 	private $nomeEmpresa;
-	private $descricao;
+	private $descricaoEmpresa;
 
 	public function __get($property) {
 	    if (property_exists($this, $property)) {

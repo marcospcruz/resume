@@ -75,7 +75,7 @@
 	$pessoa->__set('vivenciaInternacional',$montador->montaVivenciaInternacional($pessoa,$request->internationalExperience));
 	//SKILLS
 	$pessoa->__set('skills',$montador->montaSkills($pessoa,$request->skills));
-	die();
+	die('Sucesso!');
 	//echo $postdata;
 
 class Montador{
@@ -198,7 +198,9 @@ class Montador{
 	private function montaCurso($nomeCurso,$nomeEmpresa){
 		$dao=new CursoDAO();
 		$curso=new CursoTO();
-		$instituicao=$this->montaEmpresa($nomeEmpresa);
+		$empresa=new EmpresaTO();
+		$empresa->__set('nomeEmpresa',$nomeEmpresa);
+		$instituicao=$this->montaEmpresa($empresa);
 		$curso->__set('instituicao',$instituicao);
 		$curso->__set('nomeCurso',$nomeCurso);
 		$c=$dao->read($curso);
@@ -275,12 +277,13 @@ class Montador{
 		return $experienciaArray;
 	}
 
-	private function montaEmpresa($dados){
+	private function montaEmpresa($dadosEmpresa){
 		$empresaDao=new EmpresaDAO();
-		$empresa=$empresaDao->read($dados);
+		$empresa=$empresaDao->read($dadosEmpresa->nomeEmpresa);
 		if(!isset($empresa)){
 			$empresa=new EmpresaTO();
-			$empresa->__set('nomeEmpresa',$dados);
+			$empresa->__set('nomeEmpresa',$dadosEmpresa->nomeEmpresa);
+			$empresa->__set('descricaoEmpresa',$dadosEmpresa->descricaoEmpresa);
 			$empresa=$empresaDao->create($empresa);
 		}
 		return $empresa;

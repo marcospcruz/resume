@@ -3,6 +3,9 @@ var app=angular.module('formApp',['ui.tinymce']);
 app.controller('formController',['$scope','$http',function($scope,$http){
 		
 		$scope.formData={};
+
+		
+
 		//$scope.formData.contatos=[];
 		$scope.formData.curriculum={};
 		$scope.formData.curriculum.professionalExperience=[];
