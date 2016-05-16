@@ -6,7 +6,9 @@ class ContatoDAO{
 		'idContato',
 		'valor',
 		'idPessoa',
-		'idTipoContato'
+		'idTipoContato',
+		'displayOnView'
+	
 	);
 
 	public function read($contato){
@@ -14,7 +16,8 @@ class ContatoDAO{
 		$SQL.=$this->COLUNAS[0].",";
 		$SQL.=$this->COLUNAS[1].",";
 		$SQL.=$this->COLUNAS[2].",";
-		$SQL.=$this->COLUNAS[3];
+		$SQL.=$this->COLUNAS[3].",";
+		$SQL.=$this->COLUNAS[4];
 		$SQL.=" from contato where ".$this->COLUNAS[1]." = '".$contato->__get($this->COLUNAS[1])."' and ";
 		$pessoa=$contato->__get('pessoa');
 		$SQL.=$this->COLUNAS[2].'='.$pessoa->__get($this->COLUNAS[2]);
@@ -23,11 +26,12 @@ class ContatoDAO{
 		while($result=mysql_fetch_array($query)){
 			$contato=new PessoaTO();
 			$contato->__set($this->COLUNAS[0],$result[0]);
-			$pessoa->__set($this->COLUNAS[1],$result[1]);
+			$contato->__set($this->COLUNAS[1],$result[1]);
 			$pessoa->__set('pessoa',$pessoa);
 			$tipoContato=new TipoContatoTO();
 			$tipoContato->__set($this->COLUNAS[3],$result[3]);
-			$pessoa->__set('tipoContato',$tipoContato);
+			$contato->__set('tipoContato',$tipoContato);
+			$contato->__set('displayOnView',$result[4]);
 
 		}
 
@@ -45,13 +49,15 @@ class ContatoDAO{
 		$SQL="insert into contato(";
 		$SQL.=$this->COLUNAS[1].",";
 		$SQL.=$this->COLUNAS[2].",";
-		$SQL.=$this->COLUNAS[3];
+		$SQL.=$this->COLUNAS[3].",";
+		$SQL.=$this->COLUNAS[4];
 		$SQL.=") values('";;
 		$SQL.=$contato->__get($this->COLUNAS[1])."',";
 		$pessoa=$contato->__get('pessoa');
 		$SQL.=$pessoa->__get($this->COLUNAS[2]).",";
 		$tipoContato=$contato->__get('tipoContato');
-		$SQL.=$tipoContato->__get($this->COLUNAS[3]).')';
+		$SQL.=$tipoContato->__get($this->COLUNAS[3]).",";
+		$SQL.=$contato->__get($this->COLUNAS[4]).')';
 		$this->runSql($SQL);
 		return $this->read($contato);
 

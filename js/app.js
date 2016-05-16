@@ -88,9 +88,6 @@ app.controller('formController',['$scope','$http',function($scope,$http){
 		}
 
 		$scope.languageItems = [{
-				  id: 0,
-				  label: 'Nativo'					
-				},{
 				  id: 1,
 				  label: 'Fluente'
 				}, {
@@ -99,6 +96,9 @@ app.controller('formController',['$scope','$http',function($scope,$http){
 				},{
 				  id: 3,
 				  label: 'Básico'
+				},{
+				  id: 4,
+				  label: 'Nativo'					
 				}];
 /**********************************************************************/
 /***************************Experience*********************************/

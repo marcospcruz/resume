@@ -2,7 +2,7 @@
 class EnderecoTO{
 	
 	private $idEndereco;
-
+	private $displayOnView;
 	private $logradouro;
 	private $numero;
 	private $cep;

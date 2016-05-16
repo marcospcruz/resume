@@ -47,14 +47,14 @@ class FormacaoDAO{
 		$query=mysql_query($SQL);
 		$formacao=null;
 		while($result=mysql_fetch_array($query)){
-			$tipoFormacao=new TipoFormatacaoTO();
+			$tipoFormacao=new TipoFormacaoTO();
 			$tipoFormacao->__set('idTipoFormacao',$result[1]);
 			$curso=new CursoTO();
 			$curso->__set('idCurso',$result[6]);
 			$grauFormacao=new GrauFormacaoTO();
 			$grauFormacao->__set('idGrauFormacao',$result[7]);
 
-			$formacao=new FormacaoAcademicaTO();
+			$formacao=new FormacaoTO();
 			$formacao->__set($this->COLUNAS[0],$result[0]);
 
 			$formacao->__set('tipoFormacao',$tipoFormacao);
@@ -71,7 +71,7 @@ class FormacaoDAO{
 	}
 
 	public function create($formacao){
-		$SQL="insert into formacaoAcademica(";
+		$SQL="insert into formacao(";
 		$SQL.=$this->COLUNAS[1].',';
 		$SQL.=$this->COLUNAS[2].',';
 		$SQL.=$this->COLUNAS[3].',';
@@ -80,15 +80,23 @@ class FormacaoDAO{
 		$SQL.=$this->COLUNAS[6].',';
 		$SQL.=$this->COLUNAS[7].',';
 		$SQL.=$this->COLUNAS[8];
-		$SQL.=") values('";
-		$SQL.=$formacao->__get($this->COLUNAS[1])."',";
-
-		$i=$formacao->__get('curso');
-		$SQL.=$i->__get($this->COLUNAS[2]).",";				
+		$SQL.=") values(";
 		$tipoFormacao=$formacao->__get('tipoFormacao');
-		$SQL.=$tipoFormacao->__get($this->COLUNAS[3]).",";
+		$SQL.=$tipoFormacao->__get($this->COLUNAS[1]).",'";
+		$SQL.=$formacao->__get($this->COLUNAS[2])."','";
+		$SQL.=$formacao->__get($this->COLUNAS[3])."','";
+		$SQL.=$formacao->__get($this->COLUNAS[4])."','";
+		$SQL.=$formacao->__get($this->COLUNAS[5])."',";
+		$curso=$formacao->__get('curso');
+		$SQL.=$curso->__get($this->COLUNAS[6]).",";
+		$grauFormacao=$formacao->__get('grauFormacao');
+		if(isset($grauFormacao))
+			$SQL.=$grauFormacao->__get($this->COLUNAS[7]).",";
+		else 
+			$SQL.="NULL,";
 		$pessoa=$formacao->__get('pessoa');
-		$SQL.=$pessoa->__get($this->COLUNAS[4]).")";
+		$SQL.=$pessoa->__get($this->COLUNAS[8]).")";
+
 		$this->runSql($SQL);
 		return $this->read($formacao);
 	}

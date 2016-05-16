@@ -17,21 +17,24 @@
 <body ng-app="formApp" ng-controller="formController">
 	<form ng-submit="submitForm()">
 		<p>Nome: <input type='text' id='nameId' name='name' ng-model="formData.name"></p>
-		<p>Endereço:<br>Logradouro (Av, Rua, Praça): <input type='text' id='logradouroId' name='logradouro' ng-model="formData.endereco.logradouro"></p>
+		<div style="background: grey">
+		<p>Endereço:Exibir na view?<input type="checkbox" value="true" ng-model="formData.endereco.displayOnView"><br>Logradouro (Av, Rua, Praça): <input type='text' id='logradouroId' name='logradouro' ng-model="formData.endereco.logradouro"></p>
 		<p>Número: <input type='text' id='numeroId' name='numero' ng-model="formData.endereco.numero"></p>
 		<p>CEP: <input type='text' id='cepId' name='cep' ng-model="formData.endereco.cep"></p>
 		<p>Bairro: <input type='text' id='bairroId' name='bairro' ng-model="formData.endereco.bairro"></p>
 		<p>Cidade: <input type='text' id='cidadeId' name='cidade' ng-model="formData.endereco.cidade"></p>
 		<p>UF: <input type='text' id='ufId' name='uf' ng-model="formData.endereco.uf"></p>
+	</div>
 		<p>Contatos - <a href='#' ng-click="add()">+</a>:
 			<div style="background: yellow;" ng-repeat="componente in componentes track by $index"> 
 				<select ng-options="item as item.label for item in items track by item.id" ng-model="formData.contatos[$index].tipoContato"></select>
 				<input type='text' ng-model='formData.contatos[$index].contato' placeholder="{{componente.textPlaceHolder}}">
+Exibir na view?<input type="checkbox" value="true" ng-model="formData.contatos[$index].displayOnView">
 			</div>
 		</p>
 		<p>Nacionalidade: <input type='text' id='nationalityId' name='nationality' ng-model="formData.nationality"></p>
-		<p>Estado Civil: Solteiro <input type='radio' id='MaritalStatusId' name='maritalStatus' value='1' ng-model="formData.maritalStatus.status">
-		Casado <input type='radio' id='MaritalStatusId' name='maritalStatus' value='2' ng-model="formData.maritalStatus.status"></p>
+		<p style="background: grey">Estado Civil: <input type='radio' id='MaritalStatusId' name='maritalStatus' value='1' ng-model="formData.maritalStatus.status">Solteiro - 
+		 <input type='radio' id='MaritalStatusId' name='maritalStatus' value='2' ng-model="formData.maritalStatus.status">Casado - 																																																																																																																																																																																																																																																																																																																																																																																																							Exibir na view?<input type="checkbox" value="true" ng-model="formData.maritalStatus.displayOnView"></p>
 		<p>Data de Nascimento: <input type='text' id='birthDateId' name='birthDate' ng-model="formData.birthDate"></p>
 		<p>Objetivo: <input type='text' id='objectiveId' name='objective' ng-model="formData.curriculum.objetivo"></p>
 		<p>Summary: <textarea id="summaryArea" ui-tinymce="tinymceOptions" ng-model="formData.curriculum.summary"></textarea></p>

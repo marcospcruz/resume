@@ -9,7 +9,8 @@ class EnderecoDAO{
 		'cidade',
 		'logradouro',
 		'numero',
-		'uf'
+		'uf',
+		'displayOnView'
 	);
 	private function runSql($sql){
 		$retVal=mysql_query($sql);
@@ -26,7 +27,8 @@ class EnderecoDAO{
 		$SQL.=$this->COLUNAS[3].",";
 		$SQL.=$this->COLUNAS[4].",";
 		$SQL.=$this->COLUNAS[5].",";
-		$SQL.=$this->COLUNAS[6];
+		$SQL.=$this->COLUNAS[6].",";
+		$SQL.=$this->COLUNAS[7];
 		$SQL.=" from endereco where ";
 		$SQL.=$this->COLUNAS[1]."='".$endereco->__get($this->COLUNAS[1])."' AND ";
 		$SQL.=$this->COLUNAS[2]."='".$endereco->__get($this->COLUNAS[2])."' AND ";
@@ -45,6 +47,7 @@ class EnderecoDAO{
 			$endereco->__set($this->COLUNAS[4],$result[4]);
 			$endereco->__set($this->COLUNAS[5],$result[5]);
 			$endereco->__set($this->COLUNAS[6],$result[6]);
+			$endereco->__set($this->COLUNAS[7],$result[7]);
 		}
 		return $endereco;
 	}
@@ -56,13 +59,15 @@ class EnderecoDAO{
 		$SQL.=$this->COLUNAS[3].",";
 		$SQL.=$this->COLUNAS[4].",";
 		$SQL.=$this->COLUNAS[5].",";
-		$SQL.=$this->COLUNAS[6].") values('";
+		$SQL.=$this->COLUNAS[6].",";
+		$SQL.=$this->COLUNAS[7].") values('";
 		$SQL.=$endereco->__get($this->COLUNAS[1])."','";
 		$SQL.=$endereco->__get($this->COLUNAS[2])."','";
 		$SQL.=$endereco->__get($this->COLUNAS[3])."','";
 		$SQL.=$endereco->__get($this->COLUNAS[4])."','";
 		$SQL.=$endereco->__get($this->COLUNAS[5])."','";
-		$SQL.=$endereco->__get($this->COLUNAS[6])."')";
+		$SQL.=$endereco->__get($this->COLUNAS[6])."',";
+		$SQL.=$endereco->__get($this->COLUNAS[7]).")";
 		$this->runSql($SQL);
 		return $this->read($endereco);
 	}

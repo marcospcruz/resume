@@ -3,11 +3,11 @@
 class VivenciaInternacionalTO{
 	
 	private $idVivenciaInternacional;
-	private $dataInicio;
-	private $dataFim;
+	//private $dataInicio;
+	//private $dataFim;
+	private $duracao;
 	private $pais;
-
-	private TipoVivenciaInternacionalTO tipoVivenciaInternacional;
+	private $tipoVivenciaInternacional;
 
 
 	public function __get($property) {

@@ -4,7 +4,7 @@ class ContatoTO{
 	private $valor;
 	private $tipoContato;
 	private $pessoa;
-
+	private $displayOnView;
 
 	public function __get($property) {
 	    if (property_exists($this, $property)) {
