@@ -6,6 +6,7 @@ class SkillDAO{
 		'idSkill',
 		'nomeSkill'
 	);
+	const TABLE_NAME='skill';
 	private function runSql($sql){
 		$retVal=mysql_query($sql);
 
@@ -33,7 +34,20 @@ class SkillDAO{
 		}
 		return $skill;
 	}
-
+	public function readSkillsFromPerson($pessoa){
+		$sql=$this->selectBuilder();
+		$sql.=' where ps.idPessoa='.$pessoa->__get('idPessoa');
+		$sql.=' order by s.nomeSkill';
+		$query=mysql_query($sql);
+		$skills=null;
+		while($result=mysql_fetch_array($query)){
+			$skill=new SkillTO();
+			$skill->__set($this->COLUNAS[0],$result[0]);
+			$skill->__set($this->COLUNAS[1],$result[1]);
+			$skills[sizeof($skills)]=$skill;
+		}
+		return $skills;
+	}
 	public function create($skill){
 		$SQL="insert into skill(";
 		$SQL.=$this->COLUNAS[1];
@@ -51,6 +65,21 @@ class SkillDAO{
 		mysql_query($SQL);
 
 	}
+
+	private function selectBuilder(){
+		$sql='select ';
+		for($i=0;$i<sizeof($this->COLUNAS);$i++){
+
+			$sql.='s.'.$this->COLUNAS[$i];
+
+			if($i<(sizeof($this->COLUNAS)-1))
+				$sql.=',';
+		}
+		$sql.=' from '.self::TABLE_NAME.' s ';
+		$sql.=' inner join pessoaSkills ps on ps.idSkill=s.idSkill ';
+		return $sql;
+	}
+
 }
 
 

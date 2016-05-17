@@ -6,6 +6,7 @@ class IdiomaDAO{
 		'idIdioma',
 		'nomeIdioma'
 	);
+	const TABLE_NAME='idioma';
 	private function runSql($sql){
 		$retVal=mysql_query($sql);
 
@@ -13,7 +14,26 @@ class IdiomaDAO{
 			die('Falha ao inserir idioma!');
 		return $retVal;
 	}
+	public function readLanguangesFromPerson($pessoa){
 
+		$sql=$this->selectBuilder();
+		$query=mysql_query($sql);
+
+		$idiomas=null;
+		while($result=mysql_fetch_array($query)){
+			$indice=sizeof($idiomas);
+			$idioma=new IdiomaTO();
+			$idioma->__set($this->COLUNAS[0],$result[0]);
+			$idioma->__set($this->COLUNAS[1],$result[1]);
+			
+			$fluenciaIdioma=new FluenciaIdiomaTO();
+			$fluenciaIdioma->__set('idFluenciaIdioma',$result[2]);
+			$idiomas[$idioma->__get('nomeIdioma')]=$fluenciaIdioma;
+		}
+
+		return $idiomas;
+
+	}
 	public function read($idioma){
 	
 		$SQL="select ";
@@ -54,6 +74,22 @@ class IdiomaDAO{
 		mysql_query($SQL);
 
 	}
+
+	private function selectBuilder(){
+		$sql='select ';
+		for($i=0;$i<sizeof($this->COLUNAS);$i++){
+
+			$sql.='i.'.$this->COLUNAS[$i];
+
+			if($i<(sizeof($this->COLUNAS)-1))
+				$sql.=',';
+		}
+		$sql.=',pfi.idFluenciaIdioma ';
+		$sql.=' from '.self::TABLE_NAME.' i ';
+		$sql.=' inner join pessoaFluenciaIdioma pfi on pfi.idIdioma=i.idIdioma ';
+		return $sql;
+	}
+
 }
 
 

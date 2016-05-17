@@ -21,9 +21,13 @@ class PaisDAO{
 		$SQL.=$this->COLUNAS[0]. ',';
 		$SQL.=$this->COLUNAS[1];
 		$SQL.=" from pais where ";
-		$SQL.=$this->COLUNAS[1]."='";
-		$SQL.=$pais->__get($this->COLUNAS[1])."'";
-
+		if($pais->__get($this->COLUNAS[1])!=""){				
+			$SQL.=$this->COLUNAS[1]."='";
+			$SQL.=$pais->__get($this->COLUNAS[1])."'";
+		}
+		else{
+			$SQL.="idPais=".$pais->__get('idPais');
+		}
 		$query=mysql_query($SQL);
 
 		$pais=null;

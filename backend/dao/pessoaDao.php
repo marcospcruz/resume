@@ -72,6 +72,23 @@ class PessoaDAO{
 			$curriculumDao=new CurriculumDAO();
 			$curriculuns=$curriculumDao->readCurriculumPessoa($pessoa);
 			$pessoa->__set('curriculuns',$curriculuns);
+			
+			$skillDao=new SkillDAO();
+			$skills=$skillDao->readSkillsFromPerson($pessoa);
+			$pessoa->__set('conhecimentosAdquiridos',$skills);
+
+			$idiomaDao=new IdiomaDAO();
+			$idiomas=$idiomaDao->readLanguangesFromPerson($pessoa);
+			$pessoa->__set('idiomas',$idiomas);
+
+			$vivenciaDao=new VivenciaInternacionalDAO();
+			$vivencias=$vivenciaDao->readVivenciaFromPerson($pessoa);
+			$pessoa->__set('vivenciaInternacional',$vivencias);
+
+			$formacaoDao=new FormacaoDAO();
+			$formacao=$formacaoDao->readFormacaoFromPerson($pessoa);
+			$pessoa->__set('formacao',$formacao);
+	
 		}
 		return $pessoa;
 	}

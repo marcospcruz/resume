@@ -12,7 +12,7 @@ class PessoaTO{
 	private $curriculuns;
 	private $formacao;
 	private $idiomas;
-	private $vivenciaInternarcional;
+	private $vivenciaInternacional;
 //	private $formacaoExtracurricular;
 	private $conhecimentosAdquiridos;
 	

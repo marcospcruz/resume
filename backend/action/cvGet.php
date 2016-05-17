@@ -53,7 +53,48 @@
 		
 	}
 	
+	$skills=$pessoa->__get('conhecimentosAdquiridos');
+	for($i=0;$i<sizeof($skills);$i++){
+		$pessoaJson->skills[$i]=$skills[$i]->nomeSkill;
+	}
 
+	$idiomas=$pessoa->__get('idiomas');
+	$i=0;
+	foreach($idiomas as $key=>$value){
+		$pessoaJson->languages[$i]->language=$key;
+		$pessoaJson->languages[$i]->languageLevel->id=$value->idFluenciaIdioma;
+		$i++;
+	}
+	//vivencia internacional
+	$vivenciasInternacionais=$pessoa->__get('vivenciaInternacional');
+
+
+	for($i=0;$i<sizeof($vivenciasInternacionais);$i++){
+		$vivencia=$vivenciasInternacionais[$i];
+		$pais=$vivencia->__get('pais');
+		$tipoVivencia=$vivencia->__get('tipoVivenciaInternacional');
+		$pessoaJson->internationalExperience[$i]->country=$pais->__get('nomePais');
+		$pessoaJson->internationalExperience[$i]->duration=$vivencia->__get('duracao');
+		$pessoaJson->internationalExperience[$i]->experienceLiving->id=$tipoVivencia->__get('idTipoVivenciaInternacional');
+	}
+
+	//formacao
+	$formacao=$pessoa->__get('formacao');
+	for($i=0;$i<sizeof($formacao);$i++){
+		$f=$formacao[$i];
+		$curso=$f->__get('curso');
+		$tipo=$f->__get('tipoFormacao');
+		$instituicao=$curso->__get('instituicao');
+		$grauFormacao=$f->__get('grauFormacao');
+
+		$pessoaJson->educationList[$i]->education=$curso->nomeCurso;
+		$pessoaJson->educationList[$i]->institution=$instituicao->__get('nomeEmpresa');
+		$pessoaJson->educationList[$i]->educationType->id=$tipo->__get('idTipoFormacao');
+		$pessoaJson->educationList[$i]->duration=$f->__get('duracaoHoras');
+		$pessoaJson->educationList[$i]->dataInicio=$f->__get('dataInicio');
+		$pessoaJson->educationList[$i]->dataFim=$f->__get('dataFim');
+		$pessoaJson->educationList[$i]->educationDegree->id=$grauFormacao->__get('idGrauFormacao');
+	}
 
 	echo json_encode($pessoaJson);
 

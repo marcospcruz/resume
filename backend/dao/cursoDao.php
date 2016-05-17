@@ -21,15 +21,23 @@ class CursoDAO{
 		$SQL.=$this->COLUNAS[1]. ',';
 		$SQL.=$this->COLUNAS[2];
 		$SQL.=" from curso where ";
-		$SQL.=$this->COLUNAS[1]."='".$curso->__get($this->COLUNAS[1])."' and ";
 		$empresa=$curso->__get('instituicao');
 		$SQL.=$this->COLUNAS[2]."=".$empresa->__get($this->COLUNAS[2]);
+		if($curso->__get('nomeCurso')!=""){
+			$SQL.=" AND ".$this->COLUNAS[1]."='".$curso->__get($this->COLUNAS[1])."'";
+			
+		}else{
+			$SQL.=" AND idCurso=".$curso->__get('idCurso');
+		}
+
 		$query=mysql_query($SQL);
 		$curso=null;
 		while($result=mysql_fetch_array($query)){
 			$curso=new CursoTO();
 			$curso->__set($this->COLUNAS[0],$result[0]);
 			$curso->__set($this->COLUNAS[1],$result[1]);
+			$empresaDao=new EmpresaDAO();
+			$empresa=$empresaDao->readEmpresaById($empresa->__get('idEmpresa'));
 			$curso->__set('instituicao',$empresa);
 		}
 		return $curso;

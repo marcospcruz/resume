@@ -11,6 +11,14 @@ app.controller('formController',['$scope','$http',function($scope,$http){
 				$scope.add();
 			for(var i=0;i<response.data.curriculum.professionalExperience.length;i++)
 				$scope.addExperience();
+			for(var i=0;i<response.data.skills.length;i++)
+				$scope.addSkill();
+			for(var i=0;i<response.data.languages.length;i++)
+				$scope.addLanguage();
+			for(var i=0;i<response.data.internationalExperience.length;i++)
+				$scope.addInternationalExperience();
+			for(var i=0;i<response.data.educationList.length;i++)
+				$scope.addEducation();
 		},function myError(response){
 			alert(JSON.stringify(response));
 		});

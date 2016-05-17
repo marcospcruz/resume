@@ -13,6 +13,7 @@ class FormacaoDAO{
 		'idGrauFormacao',//7
 		'idPessoa'//8
 	);
+	const TABLE_NAME='formacao';
 	private function runSql($sql){
 		$retVal=mysql_query($sql);
 
@@ -21,6 +22,58 @@ class FormacaoDAO{
 		return $retVal;
 	}
 
+	private function selectBuilder(){
+		$sql='select ';
+		for($i=0;$i<sizeof($this->COLUNAS);$i++){
+
+			$sql.='f.'.$this->COLUNAS[$i];
+
+			if($i<(sizeof($this->COLUNAS)-1))
+				$sql.=',';
+		}
+		$sql.=',c.idEmpresa ';
+		$sql.=' from '.self::TABLE_NAME.' f ';
+		$sql.=' inner join curso c on c.idCurso=f.idcurso ';
+
+		return $sql;
+	}
+	public function readFormacaoFromPerson($pessoa){
+		$sql=$this->selectBuilder();
+		$sql.=' where f.idPessoa='.$pessoa->__get('idPessoa');
+		$query=mysql_query($sql);
+		$formacoes=null;
+		while($result=mysql_fetch_array($query)){
+			$tipoFormacao=new TipoFormacaoTO();
+			$tipoFormacao->__set('idTipoFormacao',$result[1]);
+
+			$cursoDao=new CursoDAO();
+			$curso=new CursoTO();
+			$empresa=new EmpresaTO();
+			$empresa->__set('idEmpresa',$result[9]);			
+			$curso->__set('instituicao',$empresa);
+			$curso->__set('idCurso',$result[6]);
+			$curso=$cursoDao->read($curso);
+
+			$grauFormacao=new GrauFormacaoTO();
+			$grauFormacao->__set('idGrauFormacao',$result[7]);
+
+			$formacao=new FormacaoTO();
+			$formacao->__set($this->COLUNAS[0],$result[0]);
+
+			$formacao->__set('tipoFormacao',$tipoFormacao);
+			$formacao->__set($this->COLUNAS[2],convertFromSqlToDate($result[2]));
+			$formacao->__set($this->COLUNAS[3],convertFromSqlToDate($result[3]));
+			$formacao->__set($this->COLUNAS[4],$result[4]);
+			$formacao->__set($this->COLUNAS[5],$result[5]);
+
+			$formacao->__set('curso',$curso);
+			$formacao->__set('grauFormacao',$grauFormacao);
+			$formacao->__set('pessoa',$pessoa);
+			$formacoes[sizeof($formacoes)]=$formacao;
+		}
+
+		return $formacoes;
+	}
 	public function read($formacao){
 	
 
