@@ -26,8 +26,10 @@ class VivenciaInternacionalDAO{
 			if($i<(sizeof($this->COLUNAS)-1))
 				$sql.=',';
 		}
+		$sql.=',tv.descricao ';
 		$sql.=' from '.self::TABLE_NAME.' v ';
 		$sql.=' inner join pessoaVivenciaInternacional pv on v.idVivenciaInternacional=pv.idVivenciaInternacional ';
+		$sql.=' inner join tipoVivenciaInternacional tv on v.idTipoVivenciaInternacional=tv.idTipoVivenciaInternacional ';
 		return $sql;
 	}
 
@@ -43,6 +45,8 @@ class VivenciaInternacionalDAO{
 			$vivencia->__set($this->COLUNAS[1],$result[1]);
 			$tipoVivencia=new TipoVivenciaInternacionalTO();
 			$tipoVivencia->__set($this->COLUNAS[2],$result[2]);
+
+			$tipoVivencia->__set('descricaoTipoVivencia',$result[4]);
 			$vivencia->__set('tipoVivenciaInternacional',$tipoVivencia);
 			$paisDao=new PaisDAO();
 			$pais=new PaisTO();

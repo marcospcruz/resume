@@ -22,11 +22,12 @@
 	//populando contatos
 	$contatoDao=new ContatoDAO();
 	$contatos=$pessoa->__get('contatos');
-
+	
 	for($i=0;$i<sizeof($contatos);$i++){
 		$contato=$contatos[$i];
 		$tipoContato=$contato->__get('tipoContato');
 		$pessoaJson->contatos[$i]->tipoContato->id=$tipoContato->idTipoContato;		
+		$pessoaJson->contatos[$i]->tipoContato->descricao=$tipoContato->descricao;		
 		$pessoaJson->contatos[$i]->contato=$contato->valor;
 		$pessoaJson->contatos[$i]->displayOnView=$contato->displayOnView;
 
@@ -63,6 +64,7 @@
 	foreach($idiomas as $key=>$value){
 		$pessoaJson->languages[$i]->language=$key;
 		$pessoaJson->languages[$i]->languageLevel->id=$value->idFluenciaIdioma;
+		$pessoaJson->languages[$i]->languageLevel->nivelFluencia=$value->nivelFluencia;
 		$i++;
 	}
 	//vivencia internacional
@@ -76,10 +78,14 @@
 		$pessoaJson->internationalExperience[$i]->country=$pais->__get('nomePais');
 		$pessoaJson->internationalExperience[$i]->duration=$vivencia->__get('duracao');
 		$pessoaJson->internationalExperience[$i]->experienceLiving->id=$tipoVivencia->__get('idTipoVivenciaInternacional');
+
+		$pessoaJson->internationalExperience[$i]->experienceLiving->descricao=$tipoVivencia->__get('descricaoTipoVivencia');
+		
 	}
 
 	//formacao
 	$formacao=$pessoa->__get('formacao');
+
 	for($i=0;$i<sizeof($formacao);$i++){
 		$f=$formacao[$i];
 		$curso=$f->__get('curso');
@@ -90,11 +96,13 @@
 		$pessoaJson->educationList[$i]->education=$curso->nomeCurso;
 		$pessoaJson->educationList[$i]->institution=$instituicao->__get('nomeEmpresa');
 		$pessoaJson->educationList[$i]->educationType->id=$tipo->__get('idTipoFormacao');
-		$pessoaJson->educationList[$i]->duration=$f->__get('duracaoHoras');
+		$pessoaJson->educationList[$i]->duration=$f->__get('duracaoHoras')==0?"":$f->__get('duracaoHoras');
 		$pessoaJson->educationList[$i]->dataInicio=$f->__get('dataInicio');
 		$pessoaJson->educationList[$i]->dataFim=$f->__get('dataFim');
 		$pessoaJson->educationList[$i]->educationDegree->id=$grauFormacao->__get('idGrauFormacao');
+
 	}
+	$pessoaJson->currentDate=convertFromSqlToDate(date('Y/m/d'));
 
 	echo json_encode($pessoaJson);
 

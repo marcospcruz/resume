@@ -32,18 +32,21 @@ class ContatoDAO{
 		$sql='select ';
 		for($i=0;$i<sizeof($this->COLUNAS);$i++){
 
-			$sql.=$this->COLUNAS[$i];
+			$sql.='c.'.$this->COLUNAS[$i];
 
 			if($i<(sizeof($this->COLUNAS)-1))
 				$sql.=',';
 		}
-		$sql.=' from '.self::TABLE_NAME;
+		$sql.=',tc.descricao ';
+		$sql.=' from '.self::TABLE_NAME.' c ';
+		$sql.=' inner join tipoContato tc on c.idTipoContato=tc.idTipoContato ';
 		return $sql;
 
 	}
 	public function readPersonContact($pessoa){
 		$sql=$this->selectBuilder();
-		$sql.' where idPessoa='.$pessoa->__get('idPessoa');
+		$sql.=' where idPessoa='.$pessoa->__get('idPessoa');
+
 		$query=mysql_query($sql);
 		
 		$contatos=array();
@@ -54,6 +57,7 @@ class ContatoDAO{
 			//$contato->__set('pessoa',$pessoa);
 			$tipoContato=new TipoContatoTO();
 			$tipoContato->__set($this->COLUNAS[3],$result[3]);
+			$tipoContato->__set('descricao',$result[5]);
 			$contato->__set('tipoContato',$tipoContato);
 			$contato->__set('displayOnView',boolval($result[4]));
 			$contatos[sizeof($contatos)]=$contato;

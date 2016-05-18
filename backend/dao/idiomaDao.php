@@ -28,6 +28,7 @@ class IdiomaDAO{
 			
 			$fluenciaIdioma=new FluenciaIdiomaTO();
 			$fluenciaIdioma->__set('idFluenciaIdioma',$result[2]);
+			$fluenciaIdioma->__set('nivelFluencia',$result[3]);
 			$idiomas[$idioma->__get('nomeIdioma')]=$fluenciaIdioma;
 		}
 
@@ -84,9 +85,10 @@ class IdiomaDAO{
 			if($i<(sizeof($this->COLUNAS)-1))
 				$sql.=',';
 		}
-		$sql.=',pfi.idFluenciaIdioma ';
+		$sql.=',pfi.idFluenciaIdioma,fi.nivelFluencia ';
 		$sql.=' from '.self::TABLE_NAME.' i ';
 		$sql.=' inner join pessoaFluenciaIdioma pfi on pfi.idIdioma=i.idIdioma ';
+		$sql.=' inner join fluenciaIdioma fi on fi.idFluenciaIdioma=pfi.idFluenciaIdioma ';
 		return $sql;
 	}
 

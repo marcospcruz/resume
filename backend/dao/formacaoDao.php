@@ -40,6 +40,7 @@ class FormacaoDAO{
 	public function readFormacaoFromPerson($pessoa){
 		$sql=$this->selectBuilder();
 		$sql.=' where f.idPessoa='.$pessoa->__get('idPessoa');
+		$sql.=' order by f.dataFim desc';
 		$query=mysql_query($sql);
 		$formacoes=null;
 		while($result=mysql_fetch_array($query)){

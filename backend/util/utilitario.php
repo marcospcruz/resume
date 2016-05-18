@@ -14,9 +14,10 @@
 
 
 	function convertFromSqlToDate($date){
-		$data=explode('-',$date);
-		
-		return $data[2].'/'.$data[1].'/'.$data[0];	
+		//$data=explode('-',$date);
+		//$separador='';
+		//return $data[0].$separador.$data[1].$separador.$data[2];	
+		return strtotime($date)*1000;
 	}
 
 ?>

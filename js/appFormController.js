@@ -1,7 +1,13 @@
-var app=angular.module('formApp',['ui.tinymce']);
+var app=angular.module('formApp',['ui.tinymce','ngSanitize']);
 
 app.controller('formController',['$scope','$http',function($scope,$http){
-		
+		$scope.ageCalculator=function(d1,d2){
+			var dataAtual=new Date(d1);
+			var dataNascimento=new Date(d2);
+			var diff=Math.abs(dataAtual-dataNascimento);
+			var dias=(1000*60*60*24)
+			return Math.floor((diff/dias)/365);
+		};
 		$scope.formData={};
 
 		$http.get("backend/action/cvGet.php")
