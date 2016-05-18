@@ -59,7 +59,7 @@ class ContatoDAO{
 			$tipoContato->__set($this->COLUNAS[3],$result[3]);
 			$tipoContato->__set('descricao',$result[5]);
 			$contato->__set('tipoContato',$tipoContato);
-			$contato->__set('displayOnView',boolval($result[4]));
+			$contato->__set('displayOnView',$result[4]==1);
 			$contatos[sizeof($contatos)]=$contato;
 		}
 

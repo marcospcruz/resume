@@ -49,7 +49,7 @@ class EnderecoDAO{
 			$endereco->__set($this->COLUNAS[4],$result[4]);
 			$endereco->__set($this->COLUNAS[5],$result[5]);
 			$endereco->__set($this->COLUNAS[6],$result[6]);
-			$endereco->__set($this->COLUNAS[7],boolval($result[7]));
+			$endereco->__set($this->COLUNAS[7],$result[7]==1);
 		}
 		return $endereco;
 	}
