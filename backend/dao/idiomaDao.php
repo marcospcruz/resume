@@ -66,8 +66,13 @@ class IdiomaDAO{
 		$this->runSql($SQL);
 		return $this->read($idioma);
 	}
-
+	
+	public function deleteRelationship($pessoa,$idioma){
+		$SQL="delete from pessoaFluenciaIdioma where idPessoa=".$pessoa->__get('idPessoa')." and idIdioma=".$idioma->__get('idIdioma');
+		mysql_query($SQL);
+	}
 	public function updateRelationship($pessoa,$fluencia,$idioma){
+
 		$SQL="insert into pessoaFluenciaIdioma values(";
 		$SQL.=$pessoa->__get('idPessoa').',';
 		$SQL.=$fluencia->__get('idFluenciaIdioma').',';

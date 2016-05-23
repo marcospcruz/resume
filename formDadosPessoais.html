@@ -5,7 +5,9 @@
 	<script type="text/javascript" src="js/bower_components/tinymce-dist/tinymce.js"></script>
 	<script type="text/javascript" src="js/bower_components/angular/angular.js"></script>
 	<script type="text/javascript" src="js/bower_components/angular-ui-tinymce/src/tinymce.js"></script>
+	<script type="text/javascript" src="js/bower_components/angular-sanitize/angular-sanitize.js"></script>
 	<script src="js/appFormController.js"></script>
+	<script src="js/date.js"></script>
 
 </head>
 <body ng-app="formApp" ng-controller="formController">
@@ -43,8 +45,8 @@ Grau Formação Acadêmica: <select ng-options="item as item.label for item in e
 Curso: <input type='text' ng-model='formData.educationList[$index].education' placeholder="{{componente.textPlaceHolder}}"><br>
 Instituição: <input type='text' ng-model='formData.educationList[$index].institution' placeholder="{{componente.institutionPlaceHolder}}"><br>
 Duração (Horas): <input type='text' ng-model='formData.educationList[$index].duration' placeholder="{{componente.durationPlaceHolder}}"><br>
-Início: <input type='text' ng-model='formData.educationList[$index].dataInicio' placeholder="{{componente.durationPlaceHolder}}"><br>
-Fim: <input type='text' ng-model='formData.educationList[$index].dataFim' placeholder="{{componente.durationPlaceHolder}}"><br>
+Início: <input type='text' id="dataInicioCurso" ng-model="formData.educationList[$index].dataInicio" placeholder="{{componente.durationPlaceHolder}}"><br>
+Fim: <input type='text' id="dataFimCurso" ng-model="formData.educationList[$index].dataFim" placeholder="{{componente.durationPlaceHolder}}"><br>
 
 <br><br>
 			</div>
@@ -70,7 +72,7 @@ Fim: <input type='text' ng-model='formData.educationList[$index].dataFim' placeh
 				<br>Empresa: <input type='text' ng-model='formData.curriculum.professionalExperience[$index].empresa.nomeEmpresa' placeholder="{{componente.companyPlaceHolder}}">
 				<br>Descrição Empresa:  <input type='text' id="cDescription" ng-model="formData.curriculum.professionalExperience[$index].empresa.descricaoEmpresa">
 				<br>Função: <input type='text' ng-model='formData.curriculum.professionalExperience[$index].position' placeholder="{{componente.positionPlaceHolder}}">
-				<br>Período de: <input type='text' ng-model='formData.curriculum.professionalExperience[$index].periodFrom' placeholder="{{componente.fromPlaceHolder}}">&nbsp;até&nbsp;<input type='text' ng-model='formData.curriculum.professionalExperience[$index].periodTo' placeholder="{{componente.toPlaceHolder}}">
+				<br>Período de: <input type='text' ng-model="formData.curriculum.professionalExperience[$index].periodFrom" placeholder="{{componente.fromPlaceHolder}}">&nbsp;até&nbsp;<input type='text' ng-model="formData.curriculum.professionalExperience[$index].periodTo" placeholder="{{componente.toPlaceHolder}}">
 			<br>Atividades Executadas:<!--a href='#' ng-click="addTask()">+</a>
 			<div ng-repeat="componente in experienceComponents[$index].taskComponents track by $index">
 				Descrição: <input type='text' id="taskId" ng-model='formData.professionalExperience[$index].tasks[$index].task' placeholder="{{componente.taskPlaceHolder}}"><br>		

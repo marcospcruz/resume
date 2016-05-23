@@ -111,7 +111,21 @@ class ExperienciaProfissionalDAO{
 		return $this->read($experiencia->__get($this->COLUNAS[2]),$experiencia->__get($this->COLUNAS[2]),$cv);
 	}
 
-	
+	public function update($experiencia){
+		$SQL="update experienciaProfissional set ";
+		$SQL.=$this->COLUNAS[1]."='".$experiencia->__get('dataInicio')."',";
+		$SQL.=$this->COLUNAS[2]."='".$experiencia->__get('dataFim')."',";
+		$SQL.=$this->COLUNAS[3]."='".$experiencia->__get('summary')."',";
+		$cargo=$experiencia->__get('cargo');
+		$SQL.=$this->COLUNAS[4]."=".$cargo->__get('idCargo').",";
+		$empresa=$experiencia->__get('empresa');
+		$SQL.=$this->COLUNAS[5]."=".$empresa->__get('idEmpresa').",";
+		$cv=$experiencia->__get('curriculum');
+		$SQL.=$this->COLUNAS[6]."=".$cv->__get('idCurriculum')." where idExperienciaProfissional=";
+		$SQL.=$experiencia->__get('idExperienciaProfissional');
+		$this->runSql($SQL);
+		return $this->read($experiencia->__get($this->COLUNAS[2]),$experiencia->__get($this->COLUNAS[2]),$cv);
+	}	
 }
 
 

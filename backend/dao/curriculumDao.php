@@ -57,12 +57,14 @@ class CurriculumDAO{
 		$SQL="select ".$this->COLUNAS[0].",".$this->COLUNAS[1].",".$this->COLUNAS[2]." from curriculum where objetivo='";
 		$SQL.=$dados."'";
 		$query=mysql_query($SQL);
+		
 		$curriculum=null;
 		while($result=mysql_fetch_array($query)){
 			$curriculum=new CurriculumTO();
 			$curriculum->__set('idCurriculum',$result[1]);
 			$curriculum->__set('objetivo',$result[2]);
 			$curriculum->__set('idCurriculum',$result[0]);
+
 		}
 
 		return $curriculum;
@@ -75,11 +77,12 @@ class CurriculumDAO{
 		$this->runSql($SQL);
 		return $this->read($cv->__get($this->COLUNAS[1]));
 	}
-
-	private function convertDate($data){
-		$data=explode('/',$data);
-		return $data[2].'-'.$data[1].'-'.$data[0];
+	public function update($cv){
+		$SQL="update curriculum set ".$this->COLUNAS[1]."='".$cv->__get($this->COLUNAS[1])."',".$this->COLUNAS[2]."='".$cv->__get($this->COLUNAS[2])."' where idCurriculum=".$cv->__get('idCurriculum');
+		$this->runSql($SQL);
+		return $this->read($cv->__get($this->COLUNAS[1]));
 	}
+	
 	public function createJoin($pessoa,$curriculum){
 
 		$SQL='insert into pessoaCurriculuns(idPessoa,idCurriculum) values(';

@@ -3,9 +3,14 @@
 	  * Conversão de datas do formato dd/mm/yyyy em yyyy-mm-dd
 	  */
        	function convertDate($data){
-
 		if(strlen($data)<10){
+
 			return null;
+		}
+		
+		if(strpos($data,'/')==0){
+			$seconds= $data/1000;			
+			$data=date('d/m/Y',$seconds);
 		}
 
 		$data=explode('/',$data);

@@ -11,39 +11,53 @@
 	//$pessoa = new PessoaTO();
 	$pessoaDao=new PessoaDAO();
 	$pessoa=$pessoaDao->read($request->name);
-	if(!isset($pessoa)){
 
-		$maritalStatus=new MaritalStatusTO();
+	if($request->name!="" && $request->nationality!="" && $request->birthDate!=""){
+
 		$idMaritalStatus=$request->maritalStatus->status;
-		$maritalStatus->__set('idMaritalStatus',$idMaritalStatus);
-		$pessoa=new PessoaTO();
+		if($idMaritalStatus!=""){
+			$maritalStatus=new MaritalStatusTO();
+			$maritalStatus->__set('idMaritalStatus',$idMaritalStatus);
+		}
+		if(!isset($pessoa))
+			$pessoa=new PessoaTO();
+
 		$pessoa->__set('name',$request->name);
 		$pessoa->__set('maritalStatus',$maritalStatus);
 		$pessoa->__set('nationality',$request->nationality);
 		$pessoa->__set('birthDate',convertDate($request->birthDate));
+		
 		//CRIANDO ENDERECO
-		$pessoa->__set('endereco',$montador->montaEndereco($request->endereco));
 
+		if(isset($request->endereco->logradouro)){
+			$pessoa->__set('endereco',$montador->montaEndereco($request->endereco));
+		}
 		$pessoa=$pessoaDao->update($pessoa);
+
+		//if($retorno!=1)
+		//	echo "Registro inserido com sucesso!";
 	
-	//if($retorno!=1)
-	//	echo "Registro inserido com sucesso!";
+		//CRIANDO CURRICULUM
+		$pessoa->__set('curriculuns',array());
+
+		$pessoa->addCurriculum($montador->montaCurriculum($pessoa,$request->curriculum));
+		//CRIANDO CONTATOS
+		$pessoa->__set('contatos',$montador->montaContatos($pessoa,$request->contatos));
+		//CRIANDO FORMACAO CURRICULAR
+		$pessoa->__set('formacao',$montador->montaFormacao($pessoa,$request->educationList));
+	
+		//CRIANDO FLUENCIA
+		$pessoa->__set('idiomas',$montador->montaFluenciaIdiomas($pessoa,$request->languages));
+		//CRIANDO VIVENCIA INTERNACIONAL
+		$pessoa->__set('vivenciaInternacional',$montador->montaVivenciaInternacional($pessoa,$request->internationalExperience));
+		//SKILLS
+		$pessoa->__set('skills',$montador->montaSkills($pessoa,$request->skills));
+	
+		die('Sucesso!');
+	}else{
+		die($request->name."|".$request->birthDate."|".$request->nationality);
 	}
-	//CRIANDO CURRICULUM
-	$pessoa->__set('curriculuns',array());
-	$pessoa->addCurriculum($montador->montaCurriculum($pessoa,$request->curriculum));
-	//CRIANDO CONTATOS
-	$pessoa->__set('contatos',$montador->montaContatos($pessoa,$request->contatos));
-	//CRIANDO FORMACAO CURRICULAR
-	$pessoa->__set('formacao',$montador->montaFormacao($pessoa,$request->educationList));
-	
-	//CRIANDO FLUENCIA
-	$pessoa->__set('idiomas',$montador->montaFluenciaIdiomas($pessoa,$request->languages));
-	//CRIANDO VIVENCIA INTERNACIONAL
-	$pessoa->__set('vivenciaInternacional',$montador->montaVivenciaInternacional($pessoa,$request->internationalExperience));
-	//SKILLS
-	$pessoa->__set('skills',$montador->montaSkills($pessoa,$request->skills));
-	die('Sucesso!');
+
 	//echo $postdata;
 
 class Montador{
@@ -110,7 +124,9 @@ class Montador{
 			if(!isset($i)){
 				$idioma=$dao->create($idioma);
 			}else{
-				$idioma=$i;
+				$dao->deleteRelationship($pessoa,$i);
+				$id="idIdioma";
+				$idioma->__set($id,$i->__get($id));
 			}
 			$dao->updateRelationship($pessoa,$fluencia,$idioma);
 			
@@ -144,19 +160,23 @@ class Montador{
 
 			
 	
-			if($grau->__get('idGrauFormacao')==1)
+			if(isset($grau) && $grau->__get('idGrauFormacao')==1)
 				$formacao->__set('conclusao',explode('-',$fim)[0]);
 			$formacao->__set('duracaoHoras',$dado->duration);
 
 			$f=$dao->read($formacao);
 
-			if(!isset($f)){
+			if(!isset($f)){		
 
 				$formacao=$dao->create($formacao);
 
-			}else
-				$formacao=$f;
-			
+			}else{
+				
+				$id='idFormacao';
+				$formacao->__set($id,$f->__get($id));
+
+				$formacao=$dao->update($formacao);
+			}
 			$formacoes[sizeof($formacoes)]=$formacao;
 
 		}
@@ -180,8 +200,12 @@ class Montador{
 
 	}
 	private function setDisplayOnView($show){
-		if($show==1)
+
+		if($show==1){
+
 			return $show;
+		}
+
 		return 0;
 	}
 	public function montaContatos($pessoa,$contatos){
@@ -195,20 +219,33 @@ class Montador{
 			$contato->__set('pessoa',$pessoa);
 			$contato->__set('displayOnView',$this->setDisplayOnView($dado->displayOnView));
 			$co=$dao->read($contato);
+
 			if(!isset($co)){
+				$contato=$dao->insert($contato);
+			}else{
+				$id="idContato";
+				$contato->__set($id,$co->__get($id));
 				$contato=$dao->update($contato);
 			}
 		}
 	}
 	public function montaCurriculum($pessoa,$dados){
 		$dao=new CurriculumDAO();
-		$curriculum=$dao->read($dados->objetivo);
-		if(!isset($curriculum)){
-			$curriculum=new CurriculumTO();
-			$curriculum->__set('summary',$dados->summary);
-			$curriculum->__set('objetivo',$dados->objetivo);	
+		$c=$dao->read($dados->objetivo);
+		$curriculum=new CurriculumTO();
+		$curriculum->__set('summary',$dados->summary);
+		$curriculum->__set('objetivo',$dados->objetivo);	
+
+		if(!isset($c)){
+		
 			$curriculum=$dao->create($curriculum);
 			$dao->createJoin($pessoa,$curriculum);
+
+		}else{
+			$id='idCurriculum';
+			$curriculum->__set($id,$c->__get($id));
+			$dao->update($curriculum);
+
 		}
 		$curriculum->__set('experienciaProfissional',$this->montaExperienciaProfissional($dados->professionalExperience,$curriculum));
 		return $curriculum;
@@ -216,8 +253,11 @@ class Montador{
 
 	private function montaExperienciaProfissional($dados,$curriculum){
 		$experienciaArray=array();
-		for($i=0;$i<sizeof($dados);$i++){
-			$dado=$dados[$i];
+//		die(serialize($dados));
+		//for($i=0;$i<sizeof($dados);$i++){
+		$i=0;
+		foreach($dados as $dado){
+
 			$inicio=convertDate($dado->periodFrom);
 			$fim=convertDate($dado->periodTo);
 
@@ -227,19 +267,24 @@ class Montador{
 			}
 
 			$dao=new ExperienciaProfissionalDAO();
-			$experienciaProfissional=$dao->read($inicio,$fim,$curriculum);
-			if(!isset($experienciaProfissional)){
-				$experienciaProfissional=new ExperienciaProfissionalTO();
-				$experienciaProfissional->__set('summary',$dado->tasksDescription); 
-				$experienciaProfissional->__set('dataInicio',$inicio); 
-				$experienciaProfissional->__set('dataFim',$fim); 
-				$experienciaProfissional->__set('empresa',$this->montaEmpresa($dado->empresa));
-				$experienciaProfissional->__set('cargo',$this->montaCargo($dado->position));
-				$experienciaProfissional->__set('curriculum',$curriculum);
+			$experienciaProfissional=new ExperienciaProfissionalTO();
+			$experienciaProfissional->__set('summary',$dado->tasksDescription); 
+			$experienciaProfissional->__set('dataInicio',$inicio); 
+			$experienciaProfissional->__set('dataFim',$fim); 
+			$experienciaProfissional->__set('empresa',$this->montaEmpresa($dado->empresa));
+			$experienciaProfissional->__set('cargo',$this->montaCargo($dado->position));
+			$experienciaProfissional->__set('curriculum',$curriculum);
+			$ex=$dao->read($inicio,$fim,$curriculum);
+			if(!isset($ex)){
+				
 				$experienciaProfissional=$dao->create($experienciaProfissional);
+			}else{
+				$id="idExperienciaProfissional";
+				$experienciaProfissional->__set($id,$ex->__get($id));
+				$dao->update($experienciaProfissional);
 			}
 			$experienciaArray[$i]=$experienciaProfissional;
-		
+			$i++;		
 		}
 
 		return $experienciaArray;
@@ -280,10 +325,14 @@ class Montador{
 		$endereco->__set('numero',$dados->numero);
 		$endereco->__set('uf',$dados->uf);
 		$endereco->__set('cep',$dados->cep);
+
 		$endereco->__set('displayOnView',$this->setDisplayOnView($dados->displayOnView));
 		$e=$dao->read($endereco);
 		if(!isset($e)){
 			$e=$dao->create($endereco);
+		}else{
+			$endereco->__set('idEndereco',$e->__get('idEndereco'));
+			$e=$dao->update($endereco);
 		}
 		return $e;
 	}

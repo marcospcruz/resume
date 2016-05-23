@@ -17,8 +17,10 @@ class FormacaoDAO{
 	private function runSql($sql){
 		$retVal=mysql_query($sql);
 
-		if(!$retVal)
-			die('Falha ao inserir formacao!');
+		if(!$retVal){
+			die('Falha ao inserir formacao! '.$sql);
+
+		}
 		return $retVal;
 	}
 
@@ -84,6 +86,7 @@ class FormacaoDAO{
 		$SQL.=$this->COLUNAS[0]. ',';
 		$SQL.=$this->COLUNAS[1]. ',';
 		$SQL.=$this->COLUNAS[2]. ',';
+		$SQL.=$this->COLUNAS[3]. ',';
 		$SQL.=$this->COLUNAS[4]. ',';
 		$SQL.=$this->COLUNAS[5]. ',';
 		$SQL.=$this->COLUNAS[6]. ',';
@@ -92,12 +95,12 @@ class FormacaoDAO{
 		$SQL.=" from formacao where ";
 		$curso=$formacao->__get('curso');
 		$SQL.=$this->COLUNAS[6]."='".$curso->__get($this->COLUNAS[6])."' and ";
-		$SQL.=$this->COLUNAS[2]."='".$formacao->__get($this->COLUNAS[2])."' and ";
-		$SQL.=$this->COLUNAS[3]."='".$formacao->__get($this->COLUNAS[3])."' and ";
+		//$SQL.=$this->COLUNAS[2]."='".$formacao->__get($this->COLUNAS[2])."' and ";
+		//$SQL.=$this->COLUNAS[3]."='".$formacao->__get($this->COLUNAS[3])."' and ";
 		$pessoa=$formacao->__get('pessoa');
 
 		$SQL.=$this->COLUNAS[8]."=".$pessoa->__get($this->COLUNAS[8]);
-
+		//die($SQL.'|||');
 		$query=mysql_query($SQL);
 		$formacao=null;
 		while($result=mysql_fetch_array($query)){
@@ -150,6 +153,35 @@ class FormacaoDAO{
 			$SQL.="NULL,";
 		$pessoa=$formacao->__get('pessoa');
 		$SQL.=$pessoa->__get($this->COLUNAS[8]).")";
+
+		$this->runSql($SQL);
+		return $this->read($formacao);
+	}
+
+	public function update($formacao){
+		$curso=$formacao->__get('curso');
+		$tipoFormacao=$formacao->__get('tipoFormacao');
+		$SQL="update formacao set ";
+		$SQL.=$this->COLUNAS[1]."=".$tipoFormacao->__get($this->COLUNAS[1]).",";
+		$SQL.=$this->COLUNAS[2]."='".$formacao->__get($this->COLUNAS[2])."',";
+		$SQL.=$this->COLUNAS[3]."='".$formacao->__get($this->COLUNAS[3])."',";
+		if($formacao->__get($this->COLUNAS[4])!="")
+			$SQL.=$this->COLUNAS[4]."=".$formacao->__get($this->COLUNAS[4]).",";
+		if($formacao->__get($this->COLUNAS[5])!="")
+			$SQL.=$this->COLUNAS[5]."=".$formacao->__get($this->COLUNAS[5]).",";
+		$SQL.=$this->COLUNAS[6]."=".$curso->__get($this->COLUNAS[6]).",";
+		$grauFormacao=$formacao->__get('grauFormacao');
+		$SQL.=$this->COLUNAS[7].'=';
+		if(isset($grauFormacao))
+			$SQL.=$grauFormacao->__get($this->COLUNAS[7]).",";
+		else 
+			$SQL.="NULL,";
+
+		$SQL.=$this->COLUNAS[8]."=";
+
+		$pessoa=$formacao->__get('pessoa');
+		$SQL.=$pessoa->__get($this->COLUNAS[8]);
+		$SQL.=" where idFormacao=".$formacao->__get('idFormacao');
 
 		$this->runSql($SQL);
 		return $this->read($formacao);

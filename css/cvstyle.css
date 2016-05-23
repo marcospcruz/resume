@@ -3,6 +3,9 @@
 	margin: 27mm 16mm 27mm 16mm;
 
 }
+li{
+	padding: 5px
+}
 div.dadosPessoais span{
 	padding-top: 2px;
 
@@ -17,7 +20,7 @@ div.endereco{
 div.contatos {text-align:center}
 
 div.paginaPrincipal{
-	border-style: solid;
+	/*border-style: solid;*/
 	border-width: 1px;
 	padding: 20px;
 

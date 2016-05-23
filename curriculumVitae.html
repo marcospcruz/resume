@@ -16,7 +16,7 @@
 		<div class="paginaPrincipal">
 			<div><span class="nome"><h2>{{formData.name}}<h2></span></div>
 			<div class="dadosPessoais">
-				<div class="endereco" ng-show="formData.endereco.displayOnView">
+				<div class="endereco" ng-show="formData.endereco.displayOnView==1">
 					<span class="logradouro">{{formData.endereco.logradouro}},</span>
 					<span class="numero">{{formData.endereco.numero}}</span> 
 					<span class="numero">{{formData.endereco.bairro}}</span><br>
@@ -46,7 +46,7 @@
 				<span class='title'><h3>Formação Acadêmica:</h3> </span>
 				<div ng-repeat="formacao in formData.educationList|filter: filtro" >
 					<div ng-show="formacao.educationType.id==1">
-						<span> Conclusão em {{formacao.dataFim|date:'yyyy'}}</span> - 
+						<span class="title"> Conclusão em {{formacao.dataFim|date:'yyyy'}}</span> - 
 						<span class="cursoFormacaoAcademica">{{formacao.education}}</span><br>
 						<span class="cursoInstituicao">{{formacao.institution}}</span><br>
 					

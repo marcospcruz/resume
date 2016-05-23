@@ -1,6 +1,6 @@
 var app=angular.module('formApp',['ui.tinymce','ngSanitize']);
 
-app.controller('formController',['$scope','$http',function($scope,$http){
+app.controller('formController',['$scope','$http','$timeout',function($scope,$http,$timeout){
 		$scope.ageCalculator=function(d1,d2){
 			var dataAtual=new Date(d1);
 			var dataNascimento=new Date(d2);
@@ -12,22 +12,65 @@ app.controller('formController',['$scope','$http',function($scope,$http){
 
 		$http.get("backend/action/cvGet.php")
 		.then(function(response){
-			$scope.formData=response.data;
-			for(var i=0;i<response.data.contatos.length;i++)
-				$scope.add();
-			for(var i=0;i<response.data.curriculum.professionalExperience.length;i++)
-				$scope.addExperience();
-			for(var i=0;i<response.data.skills.length;i++)
-				$scope.addSkill();
-			for(var i=0;i<response.data.languages.length;i++)
-				$scope.addLanguage();
-			for(var i=0;i<response.data.internationalExperience.length;i++)
-				$scope.addInternationalExperience();
-			for(var i=0;i<response.data.educationList.length;i++)
-				$scope.addEducation();
+			console.log('response.data is null: '+JSON.stringify(response.data.curriculum));
+			console.log(new Date());
+			if(response.data!="null"){
+
+				$scope.formData=response.data;
+				$timeout(function(){
+					formataData('birthDateId');
+					formataData("dataInicioCurso");
+					formataData('dataFimCurso');
+					console.log(new Date())
+				},150);
+				if(response.data.contatos){				
+					for(var i=0;i<$scope.formData.contatos.length;i++)
+						$scope.add();
+				}
+				if(response.data.curriculum.hasOwnProperty('professionalExperience')){	
+					for(var i=0;i<$scope.formData.curriculum.professionalExperience.length;i++)
+						$scope.addExperience();
+				}
+				if(response.data.skills){
+					for(var i=0;i<$scope.formData.skills.length;i++)
+						$scope.addSkill();
+				}
+				if(response.data.languages){
+					for(var i=0;i<$scope.formData.languages.length;i++)
+						$scope.addLanguage();
+				}
+				if(response.data.internationalExperience){
+					for(var i=0;i<$scope.formData.internationalExperience.length;i++)
+						$scope.addInternationalExperience();
+				}
+				if(response.data.educationList){
+					for(var i=0;i<$scope.formData.educationList.length;i++)
+						$scope.addEducation();
+				}
+				
+			}else console.log('response sem dados');
+
 		},function myError(response){
 			alert(JSON.stringify(response));
 		});
+
+		var formataData=function(idCampoData){
+			var formattedDate=millisToDate(document.getElementById(idCampoData).value);
+			console.log("Formatando data em "+idCampoData+" - "+formattedDate);	
+			document.getElementById(idCampoData).value=formattedDate;
+		};
+
+		/**function to convert milliseconds to date**/
+		var millisToDate=function(valor){
+
+			if(!valor)
+				return "";
+			var data=new Date();
+			data.setTime(valor);
+
+			return data.toString("dd/MM/yyyy");
+		};
+
 /***********************************************************************/
 		//$scope.formData.contatos=[];
 		$scope.formData.curriculum={};

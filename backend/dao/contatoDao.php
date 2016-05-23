@@ -3,18 +3,18 @@ require "../util/bdConexao.php";
 
 class ContatoDAO{
 	private $COLUNAS=array(
-		'idContato',
-		'valor',
-		'idPessoa',
-		'idTipoContato',
-		'displayOnView'
+		'idContato',//0
+		'valor',//1
+		'idPessoa',//2
+		'idTipoContato',//3
+		'displayOnView'//4
 	
 	);
 	const TABLE_NAME='contato';
 	private function populateEntity($query){
 		$contato=null;
 		while($result=mysql_fetch_array($query)){
-			$contato=new PessoaTO();
+			$contato=new ContatoTO();
 			$contato->__set($this->COLUNAS[0],$result[0]);
 			$contato->__set($this->COLUNAS[1],$result[1]);
 			//$contato->__set('pessoa',$pessoa);
@@ -75,6 +75,7 @@ class ContatoDAO{
 		$SQL.=" from contato where ".$this->COLUNAS[1]." = '".$contato->__get($this->COLUNAS[1])."' and ";
 		$pessoa=$contato->__get('pessoa');
 		$SQL.=$this->COLUNAS[2].'='.$pessoa->__get($this->COLUNAS[2]);
+
 		$query=mysql_query($SQL);
 		return $this->populateEntity($query);
 	}
@@ -85,7 +86,7 @@ class ContatoDAO{
 		return $retVal;
 	}
 
-	private function insert($contato){
+	public function insert($contato){
 		
 		$SQL="insert into contato(";
 		$SQL.=$this->COLUNAS[1].",";
@@ -105,10 +106,15 @@ class ContatoDAO{
 	}
 
 	public function update($contato){
+		$SQL="update contato set ";
+		$SQL.=$this->COLUNAS[1]."='".$contato->__get($this->COLUNAS[1])."',";	
+		$SQL.=$this->COLUNAS[2]."=".$contato->__get('pessoa')->__get($this->COLUNAS[2]).",";
+		$SQL.=$this->COLUNAS[3]."=".$contato->__get('tipoContato')->__get($this->COLUNAS[3]).",";		
+		$SQL.=$this->COLUNAS[4]."=".$contato->__get($this->COLUNAS[4]);
+		$SQL.=" where idContato=".$contato->__get($this->COLUNAS[0]);
+		$this->runSql($SQL);
+		return $this->read($contato);
 
-		if($contato->__get('idContato')==null){
-			return $this->insert($contato);
-		}		
 
 	}
 

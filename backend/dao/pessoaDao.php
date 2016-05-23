@@ -23,7 +23,7 @@ class PessoaDAO{
 		}
 		$sql.=',m.description ';
 		$sql.=' from '.self::TABLE_NAME.' p ';
-		$sql.=' inner join maritalStatus m on m.idMaritalStatus=p.idMaritalStatus ';
+		$sql.=' left outer join maritalStatus m on m.idMaritalStatus=p.idMaritalStatus ';
 		return $sql;
 	}
 
@@ -94,7 +94,7 @@ class PessoaDAO{
 	}
 	private function runSql($sql){
 		$retVal=mysql_query($sql);
-
+		//echo $sql;
 		if(!$retVal)
 			die('Falha ao inserir pessoa!');
 		return $retVal;
@@ -105,16 +105,23 @@ class PessoaDAO{
 		$SQL="insert into pessoa(";
 		$SQL.=$this->COLUNAS[1].",";
 		$SQL.=$this->COLUNAS[2].",";
-		$SQL.=$this->COLUNAS[3].",";
-		$SQL.=$this->COLUNAS[4].",";
-		$SQL.=$this->COLUNAS[5].") values('";;
-		$SQL=$SQL.$pessoa->__get($this->COLUNAS[1])."','";
-		$SQL=$SQL.$pessoa->__get($this->COLUNAS[2])."','";
-		$SQL.=$pessoa->__get($this->COLUNAS[3])."',";
+		$SQL.=$this->COLUNAS[3];
 		$endereco=$pessoa->__get('endereco');
-		$SQL.=$endereco->__get($this->COLUNAS[4]).",";
+		if(isset($endereco)){
+			$idendereco=",".$endereco->__get($this->COLUNAS[4]);
+			$SQL.=",".$this->COLUNAS[4];
+		}
 		$maritalStatus=$pessoa->__get('maritalStatus');
-		$SQL.=$maritalStatus->__get($this->COLUNAS[5]).")";
+		if(isset($maritalStatus)){
+			$idmaritalstatus.=','.$maritalStatus->__get($this->COLUNAS[5]);
+			$SQL.=",".$this->COLUNAS[5];
+		}
+		$SQL.=") values('";
+		$SQL.=$pessoa->__get($this->COLUNAS[1])."','";
+		$SQL.=$pessoa->__get($this->COLUNAS[2])."','";
+		$SQL.=$pessoa->__get($this->COLUNAS[3])."'";
+		$SQL.=$idendereco;
+		$SQL.=$idmaritalstatus.")";	
 		$this->runSql($SQL);
 		return $this->read($pessoa->__get($this->COLUNAS[2]));
 
@@ -124,7 +131,21 @@ class PessoaDAO{
 
 		if($pessoa->__get('idPessoa')==null){
 			return $this->insert($pessoa);
-		}		
+		}
+		$SQL="update pessoa set ";
+		$SQL.="birthDate='".$pessoa->__get('birthDate')."',";
+		$SQL.="name='".$pessoa->__get('name')."',";
+		$SQL.="nationality='".$pessoa->__get('nationality')."'";
+		$endereco=$pessoa->__get('endereco');
+		if(isset($endereco))
+			$SQL.=",idEndereco=".$endereco->__get('idEndereco');
+		$civil=$pessoa->__get('maritalStatus');
+		if(isset($civil))		
+			$SQL.=",idMaritalStatus=".$civil->__get('idMaritalStatus');
+		$SQL.=" where idPessoa=".$pessoa->__get('idPessoa');
+
+		$this->runSql($SQL);
+		return $this->read($pessoa->__get('name'));		
 
 	}
 
