@@ -96,8 +96,8 @@
 			</div>
 			<div class="conhecimentos">
 				<span class='title'><h3>Conhecimentos e Habilidades:</h3> </span>	
-				<ul>
-					<li ng-repeat="skill in formData.skills"><span class="skill">{{skill}}</span></li>
+				<ul class="skills_inline">
+					<li ng-repeat="skill in formData.skills track by $index"><span class="skill">{{skill}}</span></li>
 				</ul>	
 			</div>
 

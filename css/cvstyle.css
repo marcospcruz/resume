@@ -10,7 +10,11 @@ div.dadosPessoais span{
 	padding-top: 2px;
 
 }
-span{	font-family: Courier }
+span{	
+	/*font-family: serif;*/ 
+	font-family: courier;
+	font-size: 19px;
+}
 span.nome{
 	text-align:center;
 }
@@ -20,7 +24,7 @@ div.endereco{
 div.contatos {text-align:center}
 
 div.paginaPrincipal{
-	/*border-style: solid;*/
+	border-style: solid;
 	border-width: 1px;
 	padding: 20px;
 
@@ -63,17 +67,27 @@ div.experienciaProfissional span.nomeEmpresa{
 div.experienciaProfissional span.descricaoEmpresa{
 	display: inline-block;
 	font-style: italic;
-	padding-left: 165px;
+	padding-left: 166px;
 	width: 1000px;
 
 }
 div.experienciaProfissional span.cargo{
 	display: inline-block;
-	padding-left: 165px;
+	padding-left: 166px;
 	width: 1000px;
 	font-weight: bold;
 
 }
 div.formacaoComplementar span.cursoFormacao{
 	font-weight: bold;
+}
+
+.skills_inline{
+
+	float: left;
+}
+.skills_inline li{
+	position: relative;
+	float: left;
+	width: 30%;
 }
