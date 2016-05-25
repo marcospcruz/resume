@@ -46,9 +46,9 @@
 				<span class='title'><h3>Formação Acadêmica:</h3> </span>
 				<div ng-repeat="formacao in formData.educationList|filter: filtro" >
 					<div ng-show="formacao.educationType.id==1">
-						<span style="font-weight:bold"> Conclusão em {{formacao.dataFim|date:'yyyy'}}</span> - 
 						<span class="cursoFormacaoAcademica">{{formacao.education}}</span><br>
-						<span class="cursoInstituicao">{{formacao.institution}}</span><br>
+						<span class="cursoInstituicao">{{formacao.institution}}</span>,
+						<span> Concluído em {{formacao.dataFim|date:'yyyy'}}</span><br>
 					
 			
 				</div>
@@ -65,8 +65,8 @@
 				<span class='title'><h3>Vivência Internacional:</h3> </span>
 				<div ng-repeat="internationalExperience in formData.internationalExperience">
 					<span>{{internationalExperience.country}}</span> - 
-					<span>{{internationalExperience.duration}}</span> - 
-					<span>Vivência: {{internationalExperience.experienceLiving.descricao}}</span>
+					<span>{{internationalExperience.duration}}</span>,
+					<span>{{internationalExperience.experienceLiving.descricao}}</span>
 				</div>
 			</div>
 
@@ -85,11 +85,10 @@
 				<span class='title'><h3>Cursos Complementares:</h3> </span>
 				<ul ng-repeat="formacao in formData.educationList|filter: filtro" >
 					<li ng-show="formacao.educationType.id==2">
-						<span> Conclusão em {{formacao.dataFim|date:'MM/yyyy'}}</span> - 
 						<span class="cursoFormacao">{{formacao.education}}</span> - 
 						<span class="cursoInstituicao">{{formacao.institution}}</span> - 
-						<span class="cursoDuracao">{{formacao.duration}} Horas</span>
-
+						<span class="cursoDuracao">{{formacao.duration}} Horas</span>,
+						<span> Concluído em {{formacao.dataFim|date:'MM/yyyy'}}</span>
 				
 					</li>
 				</ul>						

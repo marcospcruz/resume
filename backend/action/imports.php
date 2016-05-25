@@ -1,5 +1,7 @@
 <?php
 	require "../util/utilitario.php";
+	require "../model/acesso.php";	
+	require "../dao/acessoDao.php";	
 	require "../dao/pessoaDao.php";
 	require "../dao/idiomaDao.php";
 	require "../dao/enderecoDao.php";

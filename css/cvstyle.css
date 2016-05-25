@@ -24,8 +24,8 @@ div.endereco{
 div.contatos {text-align:center}
 
 div.paginaPrincipal{
-	border-style: solid;
-	border-width: 1px;
+	/*border-style: solid;
+	border-width: 1px;*/
 	padding: 20px;
 
 }
@@ -61,7 +61,7 @@ div.formacaoAcademica span.cursoFormacaoAcademica{
 
 div.experienciaProfissional span.nomeEmpresa{
 	font-weight: bold;
-	padding-left: 50px;
+	padding-left: 45px;
 }
 
 div.experienciaProfissional span.descricaoEmpresa{
